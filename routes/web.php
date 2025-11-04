@@ -4,6 +4,7 @@ use App\Http\Controllers\AssessmentController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\MarkController;
 use App\Http\Controllers\ModuleController;
+use App\Http\Controllers\StudentController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -33,3 +34,6 @@ Route::prefix('modules/{module}')->group(function () {
 });
 
 Route::post('/modules/{module}/marks/import', [MarkController::class, 'import'])->name('modules.marks.import');
+Route::get('/modules/{module}/marks/export', [MarkController::class, 'export'])->name('modules.marks.export');
+
+Route::resource('students', StudentController::class);

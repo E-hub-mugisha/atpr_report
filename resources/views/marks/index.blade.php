@@ -47,6 +47,10 @@
         📤 Upload Excel
     </button>
 
+    <a href="{{ route('modules.marks.export', $module) }}" class="btn btn-outline-primary mb-3">
+        📥 Export to Excel
+    </a>
+
     <table class="table table-bordered">
         <thead>
             <tr>
