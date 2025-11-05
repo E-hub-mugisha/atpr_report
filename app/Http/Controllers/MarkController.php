@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Imports\MarksImport;
 use App\Models\Mark;
 use App\Models\Module;
+use App\Models\Student;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -16,13 +17,14 @@ class MarkController extends Controller
     public function index(Module $module)
     {
         $marks = Mark::where('module_id', $module->id)->get();
-        return view('marks.index', compact('module', 'marks'));
+        $students = Student::all();
+        return view('marks.index', compact('module', 'marks', 'students'));
     }
 
     public function store(Request $request, Module $module)
     {
         $request->validate([
-            'trainee' => 'required|string|max:255',
+            'student_id' => 'required',
             'i_a' => 'nullable|integer',
             'f_a' => 'nullable|integer',
             'c_a' => 'nullable|integer',
@@ -33,7 +35,7 @@ class MarkController extends Controller
         ]);
 
         Mark::create([
-            'trainee' => $request->trainee,
+            'student_id' => $request->student_id,
             'module_id' => $module->id,
             'i_a' => $request->i_a,
             'f_a' => $request->f_a,
@@ -104,5 +106,39 @@ class MarkController extends Controller
         return response()->streamDownload(function () use ($writer) {
             $writer->save('php://output');
         }, $fileName);
+    }
+
+    // Add update and destroy methods here
+    public function update(Request $request, Module $module, Mark $mark)
+    {
+        $request->validate([
+            'trainee' => 'required|string|max:255',
+            'i_a' => 'nullable|integer',
+            'f_a' => 'nullable|integer',
+            'c_a' => 'nullable|integer',
+            'total' => 'nullable|integer',
+            'reass' => 'nullable|integer',
+            'obs' => 'nullable|string',
+            'remarks' => 'nullable|string',
+        ]);
+
+        $mark->update([
+            'trainee' => $request->trainee,
+            'i_a' => $request->i_a,
+            'f_a' => $request->f_a,
+            'c_a' => $request->c_a,
+            'total' => $request->total,
+            'reass' => $request->reass,
+            'obs' => $request->obs,
+            'remarks' => $request->remarks,
+        ]);
+
+        return back()->with('success', 'Mark updated successfully.');
+    }
+
+    public function destroy(Module $module, Mark $mark)
+    {
+        $mark->delete();
+        return back()->with('success', 'Mark deleted successfully.');
     }
 }

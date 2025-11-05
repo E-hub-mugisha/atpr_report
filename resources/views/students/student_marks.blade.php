@@ -1,0 +1,101 @@
+@extends('layouts.app')
+@section('title', 'View Student Marks')
+@section('content')
+
+<div class="container py-4">
+    <div class="card shadow-sm border-0 rounded-4">
+        <div class="card-header bg-primary text-white rounded-top-4 d-flex justify-content-between align-items-center">
+            <h4 class="mb-0 fw-semibold">
+                <i class="bi bi-clipboard2-data-fill me-2"></i> Student Marks Overview
+            </h4>
+        </div>
+
+        <div class="card-body bg-light-subtle">
+            <!-- Student Selection -->
+            <form method="GET" action="{{ route('students.marks') }}" class="mb-4">
+                <div class="row align-items-center g-3">
+                    <div class="col-md-8">
+                        <label for="student_id" class="form-label fw-semibold text-muted">Select Student</label>
+                        <select name="student_id" id="student_id" class="form-select rounded-pill" onchange="this.form.submit()">
+                            <option value="">-- Choose a Student --</option>
+                            @foreach($students as $student)
+                                <option value="{{ $student->id }}" {{ request('student_id') == $student->id ? 'selected' : '' }}>
+                                    {{ $student->first_name }} {{ $student->last_name }} ({{ $student->student_id }})
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-4 text-end">
+                        <button type="submit" class="btn btn-primary rounded-pill px-4">
+                            <i class="bi bi-search me-1"></i> View Marks
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            @if(request('student_id'))
+                @php
+                    $student = $students->firstWhere('id', request('student_id'));
+                @endphp
+
+                @if($student && $student->marks->count() > 0)
+                    <div class="card border-0 shadow-sm rounded-4">
+                        <div class="card-header bg-light rounded-top-4">
+                            <h5 class="fw-bold text-primary mb-0">
+                                <i class="bi bi-person-badge me-1"></i>
+                                {{ $student->first_name }} {{ $student->last_name }}
+                                <small class="text-muted">({{ $student->student_id }})</small>
+                            </h5>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle mb-0">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Module</th>
+                                            <th>IA</th>
+                                            <th>FA</th>
+                                            <th>CA</th>
+                                            <th>Total</th>
+                                            <th>Reass</th>
+                                            <th>Obs</th>
+                                            <th>Remarks</th>
+                                            <th>Updated</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($student->marks as $mark)
+                                            <tr>
+                                                <td>{{ $mark->module->title ?? 'N/A' }}</td>
+                                                <td>{{ $mark->i_a }}</td>
+                                                <td>{{ $mark->f_a }}</td>
+                                                <td>{{ $mark->c_a }}</td>
+                                                <td><strong>{{ $mark->total }}</strong></td>
+                                                <td>{{ $mark->reass }}</td>
+                                                <td>{{ $mark->obs }}</td>
+                                                <td>{{ $mark->remarks }}</td>
+                                                <td class="text-muted small">{{ $mark->updated_at->diffForHumans() }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                @else
+                    <div class="alert alert-info rounded-3 mt-3">
+                        <i class="bi bi-info-circle me-1"></i> No marks available for this student yet.
+                    </div>
+                @endif
+            @else
+                <div class="text-center text-muted py-5">
+                    <i class="bi bi-person-lines-fill display-6 mb-2 text-secondary"></i>
+                    <p>Select a student above to view their marks.</p>
+                </div>
+            @endif
+        </div>
+    </div>
+</div>
+
+@endsection

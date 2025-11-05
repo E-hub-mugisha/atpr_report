@@ -31,9 +31,12 @@ Route::prefix('courses/{course}')->group(function () {
 Route::prefix('modules/{module}')->group(function () {
     Route::get('marks', [MarkController::class, 'index'])->name('modules.marks.index');
     Route::post('marks', [MarkController::class, 'store'])->name('modules.marks.store');
+    Route::put('marks/{mark}', [MarkController::class, 'update'])->name('modules.marks.update');
+    Route::delete('marks/{mark}', [MarkController::class, 'destroy'])->name('modules.marks.destroy');
 });
 
 Route::post('/modules/{module}/marks/import', [MarkController::class, 'import'])->name('modules.marks.import');
 Route::get('/modules/{module}/marks/export', [MarkController::class, 'export'])->name('modules.marks.export');
 
 Route::resource('students', StudentController::class);
+Route::get('/student/{id}/marks/view', [StudentController::class, 'viewMarks'])->name('student.marks.view');

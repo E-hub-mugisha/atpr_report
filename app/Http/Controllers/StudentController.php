@@ -69,4 +69,10 @@ class StudentController extends Controller
         $student->delete();
         return back()->with('success', 'Student deleted successfully!');
     }
+
+    public function viewMarks($id)
+    {
+        $student = Student::with('marks.module')->findOrFail($id);
+        return view('students.marks', compact('student'));
+    }
 }

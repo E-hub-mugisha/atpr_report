@@ -1,32 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zxx" class="js">
+<meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
 
 <head>
-    <meta charset="UTF-8">
-    <title>Trainee Assessment</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta charset="utf-8">
+    <meta name="author" content="Softnio">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description"
+        content="A powerful and conceptual apps base dashboard template that especially build for developers and programmers.">
+    <link rel="shortcut icon" href="images/favicon.png">
+    <title>@yield('title') | {{ config('app.name') }}</title>
+    <link rel="stylesheet" href="{{ asset('assets/css/dashlitee1e3.css?ver=3.2.4') }}">
+    <link id="skin-default" rel="stylesheet" href="{{ asset('assets/css/themee1e3.css?ver=3.2.4') }}">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-91615293-4"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+        gtag('config', 'UA-91615293-4');
+    </script>
 </head>
 
-<body>
-    <div class="container mt-5">
-        @if (session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-        @endif
-        @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul class="mb-0">
-                @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-                @endforeach
-            </ul>
+<body class="nk-body bg-lighter npc-general has-sidebar ">
+    <div class="nk-app-root">
+        <div class="nk-main ">
+            @include('layouts.sidebar')
+            <div class="nk-wrap ">
+                @include('layouts.header')
+                <div class="nk-content ">
+                    @yield('content')
+                </div>
+                @include('layouts.footer')
+            </div>
         </div>
-        @endif
-
-        @yield('content')
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
+    <script src="{{ asset('assets/js/bundlee1e3.js?ver=3.2.4') }}"></script>
+    <script src="{{ asset('assets/js/scriptse1e3.js?ver=3.2.4') }}"></script>
+    <script src="{{ asset('assets/js/demo-settingse1e3.js?ver=3.2.4') }}"></script>
+    <script src="{{ asset('assets/js/charts/gd-defaulte1e3.js?ver=3.2.4') }}"></script>
+    <script src="{{ asset('assets/js/libs/datatable-btnse1e3.js?ver=3.2.4') }}"></script>
 </body>
 
 </html>
