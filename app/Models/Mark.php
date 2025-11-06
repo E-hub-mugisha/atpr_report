@@ -8,7 +8,7 @@ class Mark extends Model
 {
     protected $fillable = [
         'student_id',
-        'module_id',
+        'lesson_id',
         'i_a',
         'f_a',
         'c_a',
@@ -18,9 +18,9 @@ class Mark extends Model
         'remarks',
     ];
 
-    public function module()
+    public function lesson()
     {
-        return $this->belongsTo(Module::class);
+        return $this->belongsTo(Lesson::class);
     }
 
     public function student()

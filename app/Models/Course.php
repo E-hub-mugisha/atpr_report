@@ -10,11 +10,22 @@ class Course extends Model
         'name',
         'description',
         'duration',
-        'trainer',
+        'trainer_id',
+        'course_code',
     ];
 
     public function modules()
     {
         return $this->hasMany(Module::class);
+    }
+
+    public function trainer()
+    {
+        return $this->belongsTo(Trainer::class);
+    }
+
+    public function students()
+    {
+        return $this->hasMany(Student::class);
     }
 }

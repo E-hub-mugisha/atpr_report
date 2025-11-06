@@ -12,6 +12,7 @@ class Module extends Model
         'description',
         'order',
         'course_id',
+        'module_code',
     ];
     public function course()
     {
@@ -21,5 +22,10 @@ class Module extends Model
     public function marks()
     {
         return $this->hasMany(Mark::class);
+    }
+
+    public function lessons()
+    {
+        return $this->hasMany(Lesson::class);
     }
 }

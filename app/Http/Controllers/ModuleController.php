@@ -22,6 +22,7 @@ class ModuleController extends Controller
             'order' => 'nullable|integer',
         ]);
 
+        $request->merge(['module_code' => 'M' . str_pad(Module::max('id') + 1, 5, '0', STR_PAD_LEFT)]);
         $course->modules()->create($request->all());
         return back()->with('success', 'Module added.');
     }
@@ -32,6 +33,7 @@ class ModuleController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'order' => 'nullable|integer',
+            'module_code' => 'required|string|unique:modules,module_code,' . $module->id,
         ]);
 
         $module->update($request->all());

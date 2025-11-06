@@ -122,15 +122,11 @@
                                         </div>
                                         <div class="modal-body">
                                             <div class="row g-3">
-                                                <div class="col-md-4">
-                                                    <label class="form-label">Student ID</label>
-                                                    <input type="text" name="student_id" value="{{ $student->student_id }}" class="form-control" readonly>
-                                                </div>
-                                                <div class="col-md-4">
+                                                <div class="col-md-6">
                                                     <label class="form-label">First Name</label>
                                                     <input type="text" name="first_name" value="{{ $student->first_name }}" class="form-control" required>
                                                 </div>
-                                                <div class="col-md-4">
+                                                <div class="col-md-6">
                                                     <label class="form-label">Last Name</label>
                                                     <input type="text" name="last_name" value="{{ $student->last_name }}" class="form-control" required>
                                                 </div>
@@ -222,15 +218,11 @@
             </div>
             <div class="modal-body">
                 <div class="row g-3">
-                    <div class="col-md-4">
-                        <label class="form-label">Student ID</label>
-                        <input type="text" name="student_id" class="form-control" readonly>
-                    </div>
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <label class="form-label">First Name</label>
                         <input type="text" name="first_name" class="form-control" required>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <label class="form-label">Last Name</label>
                         <input type="text" name="last_name" class="form-control" required>
                     </div>

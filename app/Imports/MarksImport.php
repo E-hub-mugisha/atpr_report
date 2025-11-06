@@ -2,25 +2,25 @@
 
 namespace App\Imports;
 
+use App\Models\Lesson;
 use App\Models\Mark;
-use App\Models\Module;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 class MarksImport implements ToModel, WithHeadingRow
 {
-    protected $module;
+    protected $lesson;
 
-    public function __construct(Module $module)
+    public function __construct(Lesson $lesson)
     {
-        $this->module = $module;
+        $this->lesson = $lesson;
     }
 
     public function model(array $row)
     {
         return new Mark([
             'trainee' => $row['trainee'],
-            'module_id' => $this->module->id,
+            'lesson_id' => $this->lesson->id,
             'i_a' => $row['i_a'] ?? null,
             'f_a' => $row['f_a'] ?? null,
             'c_a' => $row['c_a'] ?? null,

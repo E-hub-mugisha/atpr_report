@@ -65,7 +65,7 @@ $trainers = Trainer::all();
                                                 </div>
                                                 <div class="project-info">
                                                     <h6 class="title">{{ $course->name }}</h6><span
-                                                        class="sub-text">{{ $course->trainer ?? 'Unassigned' }}</span>
+                                                        class="sub-text">{{ $course->trainer->first_name ?? 'Unassigned' }}</span>
                                                 </div>
                                             </a>
                                             <div class="drodown"><a href="#"
@@ -155,11 +155,11 @@ $trainers = Trainer::all();
                 <div class="modal-body">
                     <div class="mb-3">
                         <label class="form-label">Select Trainer</label>
-                        <select name="trainer" class="form-select" required>
+                        <select name="trainer_id" class="form-select" required>
                             <option value="">-- Choose Trainer --</option>
                             @foreach ($trainers as $trainer)
-                            <option value="{{ $trainer->name }}" @if($course->trainer == $trainer->name) selected @endif>
-                                {{ $trainer->name }}
+                            <option value="{{ $trainer->id }}" @if($course->trainer_id == $trainer->id) selected @endif>
+                                {{ $trainer->first_name }} {{ $trainer->last_name }}
                             </option>
                             @endforeach
                         </select>
@@ -190,7 +190,7 @@ $trainers = Trainer::all();
                 <strong>Name:</strong> {{ $course->name }}<br>
                 <strong>Description:</strong> {{ $course->description }}<br>
                 <strong>Duration:</strong> {{ $course->duration }} hrs<br>
-                <strong>Trainer:</strong> {{ $course->trainer ?? 'Unassigned' }}
+                <strong>Trainer:</strong> {{ $course->trainer->first_name ?? 'Unassigned' }} {{ $course->trainer->last_name ?? '' }}<br>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -238,7 +238,13 @@ $trainers = Trainer::all();
                     <input type="text" name="name" class="form-control mb-2" placeholder="Course Name" required>
                     <textarea name="description" class="form-control mb-2" placeholder="Description"></textarea>
                     <input type="number" name="duration" class="form-control mb-2" placeholder="Duration (hrs)" required>
-                    <input type="text" name="trainer" class="form-control mb-2" placeholder="Trainer Name">
+                    <select name="trainer_id" class="form-select mb-2">
+                        <option value="">-- Select Trainer (optional) --</option>
+                        @foreach ($trainers as $trainer)
+                        <option value="{{ $trainer->id }}">{{ $trainer->first_name }} {{ $trainer->last_name }}</option>
+                        @endforeach
+                    </select>
+
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>

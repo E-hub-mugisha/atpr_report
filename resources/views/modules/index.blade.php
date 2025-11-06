@@ -103,8 +103,8 @@
                                             </div>
                                         </div>
                                         <div class="project-meta">
-                                            <a href="{{ route('modules.marks.index', $module) }}"><span class="badge badge-dim bg-success"><em
-                                                        class="icon ni ni-eye"></em><span>view student marks</span></span></a>
+                                            <a href="{{ route('modules.lessons.index', $module) }}"><span class="badge badge-dim bg-success"><em
+                                                        class="icon ni ni-eye"></em><span>view lessons</span></span></a>
                                         </div>
                                     </div>
                                 </div>

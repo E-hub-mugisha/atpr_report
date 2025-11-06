@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('marks', function (Blueprint $table) {
             $table->id();
             $table->foreignId('student_id')->constrained('students')->onDelete('cascade');
-            $table->foreignId('module_id')->constrained('modules')->onDelete('cascade');
+            $table->foreignId('lesson_id')->constrained('lessons')->onDelete('cascade');
             $table->integer('i_a')->nullable();
             $table->integer('f_a')->nullable();
             $table->integer('c_a')->nullable();

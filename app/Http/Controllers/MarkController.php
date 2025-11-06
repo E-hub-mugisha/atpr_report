@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Imports\MarksImport;
+use App\Models\Lesson;
 use App\Models\Mark;
 use App\Models\Module;
 use App\Models\Student;
@@ -14,29 +15,33 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class MarkController extends Controller
 {
-    public function index(Module $module)
+    public function index(Lesson $lesson)
     {
-        $marks = Mark::where('module_id', $module->id)->get();
+        $marks = Mark::where('lesson_id', $lesson->id)->get();
         $students = Student::all();
-        return view('marks.index', compact('module', 'marks', 'students'));
+        return view('marks.index', compact('lesson', 'marks', 'students'));
     }
 
-    public function store(Request $request, Module $module)
+    public function store(Request $request, $moduleId, $lessonId)
     {
+        $lesson = Lesson::where('id', $lessonId)
+            ->where('module_id', $moduleId)
+            ->firstOrFail();
+
         $request->validate([
-            'student_id' => 'required',
-            'i_a' => 'nullable|integer',
-            'f_a' => 'nullable|integer',
-            'c_a' => 'nullable|integer',
-            'total' => 'nullable|integer',
-            'reass' => 'nullable|integer',
+            'student_id' => 'required|exists:students,id',
+            'i_a' => 'nullable|numeric',
+            'f_a' => 'nullable|numeric',
+            'c_a' => 'nullable|numeric',
+            'total' => 'nullable|numeric',
+            'reass' => 'nullable|numeric',
             'obs' => 'nullable|string',
             'remarks' => 'nullable|string',
         ]);
 
         Mark::create([
+            'lesson_id' => $lesson->id,  // Must be included
             'student_id' => $request->student_id,
-            'module_id' => $module->id,
             'i_a' => $request->i_a,
             'f_a' => $request->f_a,
             'c_a' => $request->c_a,
@@ -46,24 +51,27 @@ class MarkController extends Controller
             'remarks' => $request->remarks,
         ]);
 
-        return back()->with('success', 'Mark recorded successfully.');
+        return redirect()->back()
+            ->with('success', 'Mark added successfully.');
     }
 
-    public function import(Request $request, Module $module)
+
+
+    public function import(Request $request, Lesson $lesson)
     {
         $request->validate([
             'excel_file' => 'required|file|mimes:xlsx,xls'
         ]);
 
-        Excel::import(new MarksImport($module), $request->file('excel_file'));
+        Excel::import(new MarksImport($lesson), $request->file('excel_file'));
 
         return back()->with('success', 'Marks imported successfully.');
     }
 
-    public function export($moduleId)
+    public function export($lessonId)
     {
-        $module = Module::with('marks')->findOrFail($moduleId);
-        $marks = $module->marks ?? collect();
+        $lesson = Lesson::with('marks')->findOrFail($lessonId);
+        $marks = $lesson->marks ?? collect();
 
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
@@ -101,44 +109,50 @@ class MarkController extends Controller
         $sheet->getStyle('A1:I1')->getFont()->setBold(true);
 
         $writer = new Xlsx($spreadsheet);
-        $fileName = 'Marks_' . $module->title . '.xlsx';
+        $fileName = 'Marks_' . $lesson->title . '.xlsx';
 
         return response()->streamDownload(function () use ($writer) {
             $writer->save('php://output');
         }, $fileName);
     }
 
-    // Add update and destroy methods here
-    public function update(Request $request, Module $module, Mark $mark)
+    public function update(Request $request, $moduleId, $lessonId, $markId)
     {
-        $request->validate([
-            'trainee' => 'required|string|max:255',
-            'i_a' => 'nullable|integer',
-            'f_a' => 'nullable|integer',
-            'c_a' => 'nullable|integer',
-            'total' => 'nullable|integer',
-            'reass' => 'nullable|integer',
-            'obs' => 'nullable|string',
-            'remarks' => 'nullable|string',
-        ]);
+        $lesson = Lesson::where('id', $lessonId)
+            ->where('module_id', $moduleId)
+            ->firstOrFail();
 
-        $mark->update([
-            'trainee' => $request->trainee,
-            'i_a' => $request->i_a,
-            'f_a' => $request->f_a,
-            'c_a' => $request->c_a,
-            'total' => $request->total,
-            'reass' => $request->reass,
-            'obs' => $request->obs,
-            'remarks' => $request->remarks,
-        ]);
+        $mark = Mark::where('id', $markId)
+            ->where('lesson_id', $lesson->id)
+            ->firstOrFail();
 
-        return back()->with('success', 'Mark updated successfully.');
+        $mark->update($request->only(['i_a', 'f_a', 'c_a', 'total', 'reass', 'obs', 'remarks']));
+
+        return back()->with('success', 'Mark updated successfully');
     }
 
-    public function destroy(Module $module, Mark $mark)
+
+    public function destroy(Mark $mark)
     {
         $mark->delete();
         return back()->with('success', 'Mark deleted successfully.');
+    }
+
+    // Show the form to select student
+    public function studentMarksForm(Module $module)
+    {
+        $students = Student::all(); // or filter by module if needed
+        return view('marks.student-marks-form', compact('module', 'students'));
+    }
+
+    // Show marks for selected student in all lessons of the module
+    public function showStudentMarks(Module $module, Student $student)
+    {
+        // Load all lessons in this module
+        $lessons = $module->lessons()->with(['marks' => function($q) use ($student) {
+            $q->where('student_id', $student->id);
+        }])->get();
+
+        return view('marks.student-marks', compact('module', 'student', 'lessons'));
     }
 }
