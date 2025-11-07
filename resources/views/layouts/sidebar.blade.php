@@ -9,7 +9,7 @@
                         </a>
                 </div>
                 <div class="nk-sidebar-brand">
-                        <a href="{{ route('courses.index') }}" class="logo-link nk-sidebar-logo">
+                        <a href="{{ route('dashboard') }}" class="logo-link nk-sidebar-logo">
                                 <img class="logo-light logo-img" src="images/logo.png" alt="logo">
                                 <img class="logo-dark logo-img" src="images/logo-dark.png" alt="logo-dark">
                         </a>
@@ -26,7 +26,7 @@
                                                 <h6 class="overline-title text-primary-alt">Dashboard</h6>
                                         </li>
                                         <li class="nk-menu-item">
-                                                <a href="{{ route('courses.index') }}" class="nk-menu-link">
+                                                <a href="{{ route('dashboard') }}" class="nk-menu-link">
                                                         <span class="nk-menu-icon"><em class="icon ni ni-dashlite"></em></span>
                                                         <span class="nk-menu-text">Dashboard</span>
                                                 </a>
@@ -35,6 +35,13 @@
                                         <!-- Courses & Modules -->
                                         <li class="nk-menu-heading">
                                                 <h6 class="overline-title text-primary-alt">Courses & Modules</h6>
+                                        </li>
+
+                                        <li class="nk-menu-item">
+                                                <a href="{{ route('courses.index') }}" class="nk-menu-link">
+                                                        <span class="nk-menu-icon"><em class="icon ni ni-dashlite"></em></span>
+                                                        <span class="nk-menu-text">All Courses</span>
+                                                </a>
                                         </li>
 
                                         <!-- Courses & Modules -->

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<html lang="zxx" class="js">
+<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
 
 <head>
     <meta charset="utf-8">
@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description"
         content="A powerful and conceptual apps base dashboard template that especially build for developers and programmers.">
-    <link rel="shortcut icon" href="images/favicon.png">
+    <link rel="shortcut icon" href="{{ asset('images/favicon.png') }}">
     <title>@yield('title') | {{ config('app.name') }}</title>
     <link rel="stylesheet" href="{{ asset('assets/css/dashlitee1e3.css?ver=3.2.4') }}">
     <link id="skin-default" rel="stylesheet" href="{{ asset('assets/css/themee1e3.css?ver=3.2.4') }}">
@@ -24,24 +24,20 @@
     </script>
 </head>
 
-<body class="nk-body bg-lighter npc-general has-sidebar ">
+<body class="nk-body bg-white npc-general pg-auth">
     <div class="nk-app-root">
         <div class="nk-main ">
-            @include('layouts.sidebar')
-            <div class="nk-wrap ">
-                @include('layouts.header')
+            <div class="nk-wrap nk-wrap-nosidebar">
                 <div class="nk-content ">
                     @yield('content')
                 </div>
-                @include('layouts.footer')
             </div>
         </div>
     </div>
+
     <script src="{{ asset('assets/js/bundlee1e3.js?ver=3.2.4') }}"></script>
     <script src="{{ asset('assets/js/scriptse1e3.js?ver=3.2.4') }}"></script>
     <script src="{{ asset('assets/js/demo-settingse1e3.js?ver=3.2.4') }}"></script>
-    <script src="{{ asset('assets/js/charts/gd-defaulte1e3.js?ver=3.2.4') }}"></script>
-    <script src="{{ asset('assets/js/libs/datatable-btnse1e3.js?ver=3.2.4') }}"></script>
 </body>
 
 </html>

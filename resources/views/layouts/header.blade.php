@@ -4,63 +4,30 @@
             <div class="nk-menu-trigger d-xl-none ms-n1"><a href="#"
                     class="nk-nav-toggle nk-quick-nav-icon" data-target="sidebarMenu"><em
                         class="icon ni ni-menu"></em></a></div>
-            <div class="nk-header-brand d-xl-none"><a href="index.html" class="logo-link"><img
+            <div class="nk-header-brand d-xl-none"><a href="{{ route('dashboard') }}" class="logo-link"><img
                         class="logo-light logo-img" src="images/logo.png"
                         srcset="/demo1/images/logo2x.png 2x" alt="logo"><img class="logo-dark logo-img"
                         src="images/logo-dark.png" srcset="/demo1/images/logo-dark2x.png 2x"
                         alt="logo-dark"></a></div>
-            <div class="nk-header-news d-none d-xl-block">
-                <div class="nk-news-list"><a class="nk-news-item" href="#">
-                        <div class="nk-news-icon"><em class="icon ni ni-card-view"></em></div>
-                        <div class="nk-news-text">
-                            <p>Do you know the latest update of 2022? <span> A overview of our is now
-                                    available on YouTube</span></p><em class="icon ni ni-external"></em>
-                        </div>
-                    </a></div>
-            </div>
+
             <div class="nk-header-tools">
                 <ul class="nk-quick-nav">
-                    <li class="dropdown language-dropdown d-none d-sm-block me-n1"><a href="#"
-                            class="dropdown-toggle nk-quick-nav-icon" data-bs-toggle="dropdown">
-                            <div class="quick-icon border border-light"><img class="icon"
-                                    src="images/flags/english-sq.png" alt=""></div>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end dropdown-menu-s1">
-                            <ul class="language-list">
-                                <li><a href="#" class="language-item"><img
-                                            src="images/flags/english.png" alt=""
-                                            class="language-flag"><span
-                                            class="language-name">English</span></a></li>
-                                <li><a href="#" class="language-item"><img
-                                            src="images/flags/spanish.png" alt=""
-                                            class="language-flag"><span
-                                            class="language-name">Español</span></a></li>
-                                <li><a href="#" class="language-item"><img src="images/flags/french.png"
-                                            alt="" class="language-flag"><span
-                                            class="language-name">Français</span></a></li>
-                                <li><a href="#" class="language-item"><img src="images/flags/turkey.png"
-                                            alt="" class="language-flag"><span
-                                            class="language-name">Türkçe</span></a></li>
-                            </ul>
-                        </div>
-                    </li>
                     <li class="dropdown user-dropdown"><a href="#" class="dropdown-toggle"
                             data-bs-toggle="dropdown">
                             <div class="user-toggle">
                                 <div class="user-avatar sm"><em class="icon ni ni-user-alt"></em></div>
                                 <div class="user-info d-none d-md-block">
-                                    <div class="user-status">Administrator</div>
-                                    <div class="user-name dropdown-indicator">Abu Bin Ishityak</div>
+                                    <div class="user-status">{{ Auth::user()->role }}</div>
+                                    <div class="user-name dropdown-indicator">{{ Auth::user()->name }}</div>
                                 </div>
                             </div>
                         </a>
                         <div class="dropdown-menu dropdown-menu-md dropdown-menu-end dropdown-menu-s1">
                             <div class="dropdown-inner user-card-wrap bg-lighter d-none d-md-block">
                                 <div class="user-card">
-                                    <div class="user-avatar"><span>AB</span></div>
-                                    <div class="user-info"><span class="lead-text">Abu Bin
-                                            Ishtiyak</span><span
-                                            class="sub-text">info@softnio.com</span></div>
+                                    <div class="user-avatar"><span>{{ Str::substr(Auth::user()->name, 0, 2) }}</span></div>
+                                    <div class="user-info"><span class="lead-text">{{ Auth::user()->name }}</span><span
+                                            class="sub-text">{{ Auth::user()->email }}</span></div>
                                 </div>
                             </div>
                             <div class="dropdown-inner">
@@ -78,13 +45,17 @@
                             </div>
                             <div class="dropdown-inner">
                                 <ul class="link-list">
-                                    <li><a href="#"><em class="icon ni ni-signout"></em><span>Sign
-                                                out</span></a></li>
+                                    <li>
+
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#logoutModal">
+                                            <em class="icon ni ni-signout"></em><span>Sign out</span>
+                                        </a>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
                     </li>
-                    <li class="dropdown notification-dropdown me-n1"><a href="#"
+                    <!-- <li class="dropdown notification-dropdown me-n1"><a href="#"
                             class="dropdown-toggle nk-quick-nav-icon" data-bs-toggle="dropdown">
                             <div class="icon-status icon-status-info"><em class="icon ni ni-bell"></em>
                             </div>
@@ -162,8 +133,36 @@
                             </div>
                             <div class="dropdown-foot center"><a href="#">View All</a></div>
                         </div>
-                    </li>
+                    </li> -->
                 </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- logout confirmation modal -->
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog"
+    aria-labelledby="logoutModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="logoutModalLabel">Confirm Logout</h5>
+                <button type="button" class="close" data-bs-dismiss="modal"
+                    aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to logout?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary"
+                    data-bs-dismiss="modal">Cancel</button>
+                <form action="{{ route('logout') }}" method="POST"
+                    class="d-inline">
+                    @csrf
+                    <button type="submit" class="btn btn-primary">Logout</button>
+                </form>
             </div>
         </div>
     </div>
