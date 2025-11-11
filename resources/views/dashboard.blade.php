@@ -2,7 +2,7 @@
 @section('title', 'Dashboard')
 @section('content')
 
-<div class="container-fluid mt-8">
+<div class="container-fluid">
     <div class="nk-content-inner">
         <div class="nk-content-body mt-4">
             <div class="nk-block-head nk-block-head-sm">
@@ -276,7 +276,7 @@
                             <div class="card-inner border-bottom">
                                 <div class="card-title-group">
                                     <div class="card-title">
-                                        <h6 class="title">Recent Activities</h6>
+                                        <h6 class="title">Course Modules</h6>
                                     </div>
                                     <div class="card-tools">
                                         <ul class="card-tools-nav">
@@ -287,43 +287,16 @@
                                 </div>
                             </div>
                             <ul class="nk-activity">
+                                @foreach($modules as $module)
                                 <li class="nk-activity-item">
                                     <div class="nk-activity-media user-avatar bg-success"><img
                                             src="images/avatar/c-sm.jpg" alt=""></div>
                                     <div class="nk-activity-data">
-                                        <div class="label">Keith Jensen requested to Widthdrawl.
-                                        </div><span class="time">2 hours ago</span>
+                                        <div class="label">{{ $module->name }} <span class="badge bg-success">Active</span>
+                                        </div><span class="time">{{ $module->created_at->diffForHumans() }}</span>
                                     </div>
                                 </li>
-                                <li class="nk-activity-item">
-                                    <div class="nk-activity-media user-avatar bg-warning">HS</div>
-                                    <div class="nk-activity-data">
-                                        <div class="label">Harry Simpson placed a Order.</div><span
-                                            class="time">2 hours ago</span>
-                                    </div>
-                                </li>
-                                <li class="nk-activity-item">
-                                    <div class="nk-activity-media user-avatar bg-azure">SM</div>
-                                    <div class="nk-activity-data">
-                                        <div class="label">Stephanie Marshall got a huge bonus.
-                                        </div><span class="time">2 hours ago</span>
-                                    </div>
-                                </li>
-                                <li class="nk-activity-item">
-                                    <div class="nk-activity-media user-avatar bg-purple"><img
-                                            src="images/avatar/d-sm.jpg" alt=""></div>
-                                    <div class="nk-activity-data">
-                                        <div class="label">Nicholas Carr deposited funds.</div><span
-                                            class="time">2 hours ago</span>
-                                    </div>
-                                </li>
-                                <li class="nk-activity-item">
-                                    <div class="nk-activity-media user-avatar bg-pink">TM</div>
-                                    <div class="nk-activity-data">
-                                        <div class="label">Timothy Moreno placed a Order.</div><span
-                                            class="time">2 hours ago</span>
-                                    </div>
-                                </li>
+                                @endforeach
                             </ul>
                         </div>
                     </div>

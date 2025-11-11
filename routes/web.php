@@ -5,9 +5,11 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AssessmentController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\IntakeController;
 use App\Http\Controllers\LessonController;
 use App\Http\Controllers\MarkController;
 use App\Http\Controllers\ModuleController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TrainerController;
 
@@ -63,7 +65,6 @@ Route::prefix('modules/{module}')->group(function () {
 
     Route::delete('/lessons/{lesson}', [LessonController::class, 'destroy'])
         ->name('modules.lessons.destroy');
-
 });
 
 Route::prefix('modules/{module}/lessons/{lesson}')->group(function () {
@@ -85,6 +86,14 @@ Route::post('/students/marks/report/pdf', [StudentController::class, 'generatePd
 Route::post('/students/marks/report/excel', [StudentController::class, 'generateExcel'])->name('students.report.excel');
 
 Route::get('/final/report', [StudentController::class, 'finalReportPage'])->name('students.final.report');
+
 Route::resource('trainers', TrainerController::class);
 
-require __DIR__.'/auth.php';
+Route::get('/rtb/reports', [ReportController::class, 'index'])->name('rtb.reports');
+Route::get('/reports/competent', [ReportController::class, 'competent'])->name('reports.competent');
+Route::get('/reports/students', [ReportController::class, 'students'])->name('reports.students');
+Route::get('/reports/final', [ReportController::class, 'final'])->name('reports.final');
+
+Route::resource('intakes', IntakeController::class);
+
+require __DIR__ . '/auth.php';

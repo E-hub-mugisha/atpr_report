@@ -8,9 +8,9 @@
             <h3 class="fw-bold text-primary"><i class="bi bi-person-badge-fill me-2"></i> Trainers</h3>
             <p class="text-muted mb-0">Manage trainers, update information, and assign courses.</p>
         </div>
-        <button class="btn btn-primary rounded-pill shadow-sm" data-bs-toggle="modal" data-bs-target="#addTrainerModal">
+        <a href="{{ route('trainers.create') }}" class="btn btn-primary rounded-pill shadow-sm">
             <i class="bi bi-plus-lg me-1"></i> Add Trainer
-        </button>
+        </a>
     </div>
 
     <div class="row g-3">

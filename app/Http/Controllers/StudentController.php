@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\StudentReportExport;
+use App\Models\Intake;
 use App\Models\Module;
 use App\Models\Student;
 use Barryvdh\DomPDF\Facade\Pdf as PDF;
@@ -14,65 +15,124 @@ class StudentController extends Controller
     public function index()
     {
         $students = Student::latest()->paginate(10);
-        return view('students.index', compact('students'));
+        $intakes = Intake::all();
+        return view('students.index', compact('students', 'intakes'));
     }
 
-    public function create()
-    {
-        return view('students.create');
-    }
-
+    /**
+     * Store a newly created student.
+     */
     public function store(Request $request)
     {
         $request->validate([
-            'first_name' => 'required',
-            'last_name' => 'required',
-            'intake_no' => 'required',
-            'intake_year' => 'required',
+            'first_name'          => 'required|string|max:255',
+            'last_name'           => 'required|string|max:255',
+            'intake_id'           => 'required|exists:intakes,id',
+            'gender'              => 'nullable|string',
+            'dob'                 => 'nullable|date',
+            'email'               => 'nullable|email',
+            'phone'               => 'nullable|string',
+            'phone_next_of_kin'   => 'nullable|string',
+            'address'             => 'nullable|string',
+            'academic_year'       => 'nullable|string',
+            'qualification_title' => 'nullable|string',
+            'status'              => 'nullable|in:active,inactive',
+            'disability'          => 'nullable|boolean',
+            'marital_status'      => 'nullable|string',
+            'education_level'     => 'nullable|string',
         ]);
 
-        // Get latest student number for that intake/year
-        $lastStudent = Student::where('intake_no', $request->intake_no)
-            ->where('intake_year', $request->intake_year)
+        // Load intake to get intake_no + intake_year
+        $intake = Intake::findOrFail($request->intake_id);
+
+        // ✅ Get last student for this intake
+        $lastStudent = Student::where('intake_id', $request->intake_id)
             ->orderBy('id', 'desc')
             ->first();
 
-        $nextNumber = $lastStudent ? ((int)substr($lastStudent->student_id, -6) + 1) : 1;
+        // ✅ Generate Next Number
+        $nextNumber = $lastStudent
+            ? ((int) substr($lastStudent->student_id, -6) + 1)
+            : 1;
+
         $formattedNumber = str_pad($nextNumber, 6, '0', STR_PAD_LEFT);
 
-        // Generate student ID like ATC/IGAK/01/24/000001
-        $student_id = "ATC/IGAK/{$request->intake_no}/{$request->intake_year}/{$formattedNumber}";
+        // ✅ Final student number format:
+        // ATC/IGAK/01/24/000001
+        $student_id = "ATC/IGAK/{$intake->intake_no}/{$intake->intake_year}/{$formattedNumber}";
 
-        Student::create(array_merge($request->all(), [
-            'student_id' => $student_id,
-        ]));
+        // ✅ Create student
+        Student::create([
+            'student_id'         => $student_id,
+            'id_number'          => $request->id_number,
+            'first_name'         => $request->first_name,
+            'last_name'          => $request->last_name,
+            'gender'             => $request->gender,
+            'dob'                => $request->dob,
+            'email'              => $request->email,
+            'phone'              => $request->phone,
+            'phone_next_of_kin'  => $request->phone_next_of_kin,
+            'address'            => $request->address,
+            'academic_year'      => $request->academic_year,
+            'qualification_title' => $request->qualification_title,
+            'status'             => $request->status,
+            'disability'         => $request->disability,
+            'marital_status'     => $request->marital_status,
+            'education_level'    => $request->education_level,
+            'intake_id'          => $request->intake_id,
+        ]);
 
-        return redirect()->route('students.index')->with('success', 'Student created successfully.');
+        return redirect()->route('students.index')
+            ->with('success', 'Student created successfully.');
     }
 
 
-    public function edit(Student $student)
-    {
-        return view('students.edit', compact('student'));
-    }
 
+    /**
+     * Update student details.
+     */
     public function update(Request $request, Student $student)
     {
         $request->validate([
-            'first_name' => 'required',
-            'last_name' => 'required',
+            'first_name'          => 'required|string|max:255',
+            'last_name'           => 'required|string|max:255',
+            'intake_id'           => 'required|exists:intakes,id',
         ]);
 
-        $student->update($request->all());
+        // ✅ Student ID should NOT regenerate on update
+        $student->update([
+            'id_number'          => $request->id_number,
+            'first_name'         => $request->first_name,
+            'last_name'          => $request->last_name,
+            'gender'             => $request->gender,
+            'dob'                => $request->dob,
+            'email'              => $request->email,
+            'phone'              => $request->phone,
+            'phone_next_of_kin'  => $request->phone_next_of_kin,
+            'address'            => $request->address,
+            'academic_year'      => $request->academic_year,
+            'qualification_title' => $request->qualification_title,
+            'status'             => $request->status,
+            'disability'         => $request->disability,
+            'marital_status'     => $request->marital_status,
+            'education_level'    => $request->education_level,
+            'intake_id'          => $request->intake_id,
+        ]);
 
-        return redirect()->route('students.index')->with('success', 'Student updated successfully!');
+        return redirect()->route('students.index')
+            ->with('success', 'Student updated successfully!');
     }
 
+    /**
+     * Remove the student.
+     */
     public function destroy(Student $student)
     {
         $student->delete();
-        return back()->with('success', 'Student deleted successfully!');
+        return redirect()->route('students.index')
+            ->with('success', 'Student deleted successfully!');
     }
+
 
     public function viewMarks($id)
     {
@@ -91,8 +151,8 @@ class StudentController extends Controller
             $selectedStudent = Student::find($request->student_id);
 
             // Get all modules for courses the student is enrolled in
-            $modules = Module::with(['lessons' => function($query) use ($selectedStudent) {
-                $query->with(['marks' => function($q) use ($selectedStudent) {
+            $modules = Module::with(['lessons' => function ($query) use ($selectedStudent) {
+                $query->with(['marks' => function ($q) use ($selectedStudent) {
                     $q->where('student_id', $selectedStudent->id);
                 }]);
             }])->get();
@@ -106,8 +166,8 @@ class StudentController extends Controller
     {
         $student = Student::findOrFail($request->student_id);
 
-        $modules = Module::with(['lessons' => function($query) use ($student) {
-            $query->with(['marks' => function($q) use ($student) {
+        $modules = Module::with(['lessons' => function ($query) use ($student) {
+            $query->with(['marks' => function ($q) use ($student) {
                 $q->where('student_id', $student->id);
             }]);
         }])->get();
@@ -120,14 +180,14 @@ class StudentController extends Controller
     public function generatePdf(Request $request)
     {
         $student = Student::findOrFail($request->student_id);
-        $modules = Module::with(['lessons' => function($q) use ($student) {
-            $q->with(['marks' => function($m) use ($student) {
+        $modules = Module::with(['lessons' => function ($q) use ($student) {
+            $q->with(['marks' => function ($m) use ($student) {
                 $m->where('student_id', $student->id);
             }]);
         }])->get();
 
         $pdf = PDF::loadView('students.report_pdf', compact('student', 'modules'))
-                  ->setPaper('a4', 'portrait');
+            ->setPaper('a4', 'portrait');
 
         return $pdf->download($student->first_name . '_report.pdf');
     }

@@ -32,7 +32,7 @@
                             for="name">Name</label>
                     </div>
                     <div class="form-control-wrap">
-                        <input autocomplete="username" type="text" name="name" class="form-control form-control-lg" required id="name" placeholder="Enter your name">
+                        <input autocomplete="name" type="text" name="name" class="form-control form-control-lg" required id="name" placeholder="Enter your name">
                     </div>
                 </div>
 

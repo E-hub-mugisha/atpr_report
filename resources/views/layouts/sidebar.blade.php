@@ -31,6 +31,12 @@
                                                         <span class="nk-menu-text">Dashboard</span>
                                                 </a>
                                         </li>
+                                        <li class="nk-menu-item">
+                                                <a href="{{ route('intakes.index') }}" class="nk-menu-link">
+                                                        <span class="nk-menu-icon"><em class="icon ni ni-calendar-check"></em></span>
+                                                        <span class="nk-menu-text">Intakes</span>
+                                                </a>
+                                        </li>
 
                                         <!-- Courses & Modules -->
                                         <li class="nk-menu-heading">
@@ -113,6 +119,8 @@
                                                         <li class="nk-menu-item">
                                                                 <a href="{{ route('students.report') }}" class="nk-menu-link">Student Marks Report</a>
                                                         </li>
+                                                        <li class="nk-menu-item">
+                                                                <a href="{{ route('rtb.reports') }}" class="nk-menu-link">RTB Reports</a>
                                                 </ul>
                                         </li>
 

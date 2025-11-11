@@ -30,7 +30,7 @@
             @include('layouts.sidebar')
             <div class="nk-wrap ">
                 @include('layouts.header')
-                <div class="nk-content ">
+                <div class="nk-content mb-4">
                     @yield('content')
                 </div>
                 @include('layouts.footer')

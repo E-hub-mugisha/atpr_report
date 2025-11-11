@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Course;
+use App\Models\Module;
 use App\Models\Student;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -21,6 +22,7 @@ class DashboardController extends Controller
         $courseName = Course::first()->name ?? 'N/A';
         $students = Student::all();
         $users = User::all();
+        $modules = Module::all();
 
         return view('dashboard', compact(
             'totalStudents',
@@ -30,7 +32,8 @@ class DashboardController extends Controller
             'avgStudents',
             'courseName',
             'students',
-            'users'
+            'users',
+            'modules'
         ));
     }
 }
