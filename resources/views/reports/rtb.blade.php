@@ -94,6 +94,13 @@
                         <option value="{{ $intake }}">{{ $intake }}</option>
                     @endforeach
                 </select>
+
+                <label class="form-label fw-semibold">Choose Format</label>
+                <select name="format" class="form-select rounded-3" required>
+                    <option value="" selected disabled>Select file format</option>
+                    <option value="pdf">PDF</option>
+                    <option value="csv">Excel</option>
+                </select>
             </div>
 
             <div class="modal-footer">

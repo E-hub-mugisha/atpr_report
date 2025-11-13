@@ -27,7 +27,7 @@ class StudentController extends Controller
         $request->validate([
             'first_name'          => 'required|string|max:255',
             'last_name'           => 'required|string|max:255',
-            'intake_id'           => 'required|exists:intakes,id',
+            'intake_id'           => 'required',
             'gender'              => 'nullable|string',
             'dob'                 => 'nullable|date',
             'email'               => 'nullable|email',
@@ -59,7 +59,7 @@ class StudentController extends Controller
 
         // ✅ Final student number format:
         // ATC/IGAK/01/24/000001
-        $student_id = "ATC/IGAK/{$intake->intake_no}/{$intake->intake_year}/{$formattedNumber}";
+        $student_id = "ATC/IGAK/{$intake->month}/{$intake->year}/{$formattedNumber}";
 
         // ✅ Create student
         Student::create([

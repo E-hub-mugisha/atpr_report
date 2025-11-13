@@ -93,6 +93,7 @@ Route::get('/rtb/reports', [ReportController::class, 'index'])->name('rtb.report
 Route::get('/reports/competent', [ReportController::class, 'competent'])->name('reports.competent');
 Route::get('/reports/students', [ReportController::class, 'students'])->name('reports.students');
 Route::get('/reports/final', [ReportController::class, 'final'])->name('reports.final');
+Route::get('/export-verification', [ReportController::class, 'export']);
 
 Route::resource('intakes', IntakeController::class);
 

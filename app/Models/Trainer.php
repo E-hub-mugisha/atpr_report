@@ -31,6 +31,10 @@ class Trainer extends Model
         return $this->hasMany(Module::class);
     }
 
+    protected $casts = [
+        'dob' => 'date',
+    ];
+
     // ✅ Relationships
     public function academicQualifications()
     {
