@@ -88,18 +88,11 @@
 
             <div class="modal-body">
                 <label class="form-label fw-semibold">Choose Intake</label>
-                <select name="intake" class="form-select rounded-3" required>
+                <select name="intake_id" class="form-select rounded-3" required>
                     <option value="" selected disabled>Select intake</option>
                     @foreach($intakes as $intake)
-                        <option value="{{ $intake }}">{{ $intake }}</option>
+                    <option value="{{ $intake->id }}">{{ $intake->month }}/{{ $intake->year }}</option>
                     @endforeach
-                </select>
-
-                <label class="form-label fw-semibold">Choose Format</label>
-                <select name="format" class="form-select rounded-3" required>
-                    <option value="" selected disabled>Select file format</option>
-                    <option value="pdf">PDF</option>
-                    <option value="csv">Excel</option>
                 </select>
             </div>
 
@@ -123,10 +116,10 @@
 
             <div class="modal-body">
                 <label class="form-label fw-semibold">Choose Intake</label>
-                <select name="intake" class="form-select rounded-3" required>
+                <select name="intake_id" class="form-select rounded-3" required>
                     <option value="" selected disabled>Select intake</option>
                     @foreach($intakes as $intake)
-                        <option value="{{ $intake }}">{{ $intake }}</option>
+                    <option value="{{ $intake->id }}">{{ $intake->month }}/{{ $intake->year }}</option>
                     @endforeach
                 </select>
             </div>
@@ -143,7 +136,7 @@
 <!-- ✅ MODAL 3: Final Report -->
 <div class="modal fade" id="finalReportModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
-        <form method="GET" action="{{ route('reports.final') }}" class="modal-content rounded-4 shadow-lg">
+        <form method="GET" action="{{ route('reports.verification') }}" class="modal-content rounded-4 shadow-lg">
             <div class="modal-header">
                 <h5 class="modal-title fw-bold">Select Intake</h5>
                 <button class="btn-close" data-bs-dismiss="modal"></button>
@@ -151,10 +144,10 @@
 
             <div class="modal-body">
                 <label class="form-label fw-semibold">Choose Intake</label>
-                <select name="intake" class="form-select rounded-3" required>
+                <select name="intake_id" class="form-select rounded-3" required>
                     <option value="" selected disabled>Select intake</option>
                     @foreach($intakes as $intake)
-                        <option value="{{ $intake }}">{{ $intake }}</option>
+                    <option value="{{ $intake->id }}">{{ $intake->month }}/{{ $intake->year }}</option>
                     @endforeach
                 </select>
             </div>

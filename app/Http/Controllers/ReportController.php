@@ -5,7 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use App\Exports\CompetentStudentsExport;
+use App\Exports\FinalReportExport;
+use App\Exports\StudentInfoReport;
 use App\Exports\VerificationExport;
+use App\Exports\VerificationReport;
+use App\Models\Intake;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ReportController extends Controller
@@ -13,30 +17,40 @@ class ReportController extends Controller
     //
     public function index()
     {
-        $intakes = Student::distinct()->pluck('academic_year');
+        $intakes = Intake::all();
         return view('reports.rtb', compact('intakes'));
     }
 
-    public function competent(Request $request)
-    {
-        $intake = $request->intake;
+    // public function competent(Request $request)
+    // {
+    //     $intake = $request->intake;
 
-        return Excel::download(new CompetentStudentsExport($intake), 'competent_students.xlsx');
+    //     return Excel::download(new CompetentStudentsExport($intake), 'competent_students.xlsx');
+    // }
+
+    public function competent()
+    {
+        $intakeId = request('intake_id');
+
+        return Excel::download(
+            new FinalReportExport($intakeId),
+            'Competent_Students_' . $intakeId . '.xlsx'
+        );
     }
 
-    public function students(Request $request)
+
+    public function studentsInfo()
     {
-        $students = Student::where('academic_year', $request->intake)->get();
-        return view('reports.students', compact('students'));
+        $intakeId = request('intake_id');
+        
+        return Excel::download(new StudentInfoReport($intakeId), 'Students_info_' . $intakeId . '.xlsx');
     }
 
-    public function final(Request $request)
+    public function verification()
     {
-        $students = Student::with('marks.module')
-            ->where('academic_year', $request->intake)
-            ->get();
+        $intakeId = request('intake_id');
 
-        return view('reports.final', compact('students'));
+        return Excel::download(new VerificationReport($intakeId), 'verification' .'.xlsx');
     }
 
     public function export()

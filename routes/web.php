@@ -91,8 +91,8 @@ Route::resource('trainers', TrainerController::class);
 
 Route::get('/rtb/reports', [ReportController::class, 'index'])->name('rtb.reports');
 Route::get('/reports/competent', [ReportController::class, 'competent'])->name('reports.competent');
-Route::get('/reports/students', [ReportController::class, 'students'])->name('reports.students');
-Route::get('/reports/final', [ReportController::class, 'final'])->name('reports.final');
+Route::get('/reports/students', [ReportController::class, 'studentsInfo'])->name('reports.students');
+Route::get('/reports/verification', [ReportController::class, 'verification'])->name('reports.verification');
 Route::get('/export-verification', [ReportController::class, 'export']);
 
 Route::resource('intakes', IntakeController::class);
