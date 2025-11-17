@@ -96,5 +96,6 @@ Route::get('/reports/verification', [ReportController::class, 'verification'])->
 Route::get('/export-verification', [ReportController::class, 'export']);
 
 Route::resource('intakes', IntakeController::class);
-
+   // routes/web.php
+Route::get('/reports/atpr-excel', [ReportController::class, 'export']);
 require __DIR__ . '/auth.php';

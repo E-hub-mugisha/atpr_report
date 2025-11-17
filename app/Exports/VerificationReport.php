@@ -102,10 +102,8 @@ class VerificationReport implements FromView, WithStyles, WithColumnWidths, Shou
 
     public function title(): string
     {
-        $intake = Intake::find($this->intake);
-        $intakeName = $intake?->name ?? 'Intake-' . $this->intake;
+        $sheetTitle = 'Student Verification' . $this->intake;
 
-        // Excel max 31 chars
-        return substr('Verification ' . $intakeName, 0, 31);
+        return substr($sheetTitle, 0, 31);
     }
 }
