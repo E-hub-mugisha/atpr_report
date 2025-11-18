@@ -41,7 +41,7 @@
                             <tbody>
                                 @foreach($student->marks as $mark)
                                 <tr>
-                                    <td>{{ $mark->module->title ?? 'N/A' }}</td>
+                                    <td>{{ $mark->lesson->title ?? 'N/A' }}</td>
                                     <td>{{ $mark->i_a }}</td>
                                     <td>{{ $mark->f_a }}</td>
                                     <td>{{ $mark->c_a }}</td>

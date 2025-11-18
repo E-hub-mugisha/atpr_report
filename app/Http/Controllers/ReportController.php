@@ -10,6 +10,8 @@ use App\Exports\FinalReportExport;
 use App\Exports\StudentInfoReport;
 use App\Exports\VerificationReport;
 use App\Models\Intake;
+use App\Models\Mark;
+use App\Models\Module;
 use Maatwebsite\Excel\Facades\Excel;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -96,10 +98,58 @@ class ReportController extends Controller
             ["Kwita ku burenganzira n'inshingano bya shoferi n'abagenzi", "DRVPD 001"],
             ["Gukora ibikenewe by'ibanze ku modoka zitwara abantu",    "DRVVM 001"],
         ];
-        $trainees = [
-            ['AKINGENEYE Jean Paul', 'Yes', 79.5, 81.5, 70.0, 85, 68, 52.5, 72.9, 75.0, 88.9, 'N/A', 'N/A', '', 'C'],
-            ['AMERIKA Aphrodis',     'Yes', 95.0, 88.0, 65.5, 95, 55, 80.0, 73.0, 75.0, 90.0, 'N/A', 'N/A', '', 'C'],
-        ];
+
+        // Students
+        $students = Student::orderBy('first_name')->get();
+
+        // Module order = the 9 modules you have
+        $moduleOrder = Module::orderBy('id')->pluck('id')->toArray();
+
+        // Build trainees
+        $trainees = [];
+
+        foreach ($students as $student) {
+
+            // get marks grouped by module
+            $marks = Mark::where('marks.student_id', $student->id)
+                ->join('lessons', 'marks.lesson_id', '=', 'lessons.id')
+                ->join('modules', 'lessons.module_id', '=', 'modules.id')
+                ->selectRaw('modules.id as module_id, AVG(marks.total) as avg_mark')
+                ->groupBy('modules.id')
+                ->pluck('avg_mark', 'module_id')
+                ->toArray();
+
+            // Start row
+            $row = [
+                $student->first_name . ' ' . $student->last_name,
+                count($marks) > 0 ? 'Yes' : 'No',
+            ];
+
+            // Per-module marks C..K
+            foreach ($moduleOrder as $moduleId) {
+                $row[] = isset($marks[$moduleId]) ? round($marks[$moduleId], 1) : 'N/A';
+            }
+
+            // L–N: Industrial + FIA + Final Score
+            $baseModuleId = $moduleOrder[0] ?? null;
+
+            if ($baseModuleId && isset($marks[$baseModuleId])) {
+                $industrial = round($marks[$baseModuleId] * 0.40, 1);
+                $fia        = round($marks[$baseModuleId] * 0.60, 1);
+                $finalScore = round($industrial + $fia, 1);
+            } else {
+                $industrial = $fia = $finalScore = 'N/A';
+            }
+
+            $row[] = $industrial;
+            $row[] = $fia;
+            $row[] = $finalScore;
+
+            // O: Decision
+            $row[] = ($finalScore !== 'N/A' && $finalScore >= 50) ? 'C' : 'NYC';
+
+            $trainees[] = $row;
+        }
         // --------------------------------------------------------------------------
 
         $wb = new Spreadsheet();

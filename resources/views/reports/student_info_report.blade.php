@@ -117,8 +117,8 @@
         <th>Training End date</th>
         <th>Graduate Status</th>
     </tr>
-    <tr>
-        @foreach($students as $index => $student)
+    @foreach($students as $index => $student)
+    <tr> 
         <td>{{ $student->student_id }}</td>
         <td>{{ $student->id_number }}</td>
         <td>{{ $student->full_name }}</td>
@@ -135,9 +135,9 @@
         <td>Dual Training</td>
         <td>10/22/2024</td>
         <td>01/26/2025</td>
-        <td>Ongoing</td>
-        @endforeach
+        <td>Ongoing</td> 
     </tr>
+    @endforeach
 </table>
 
 <!-- Signature Table (starts in column B) -->

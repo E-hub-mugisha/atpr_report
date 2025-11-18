@@ -142,7 +142,7 @@ class StudentController extends Controller
 
     public function viewMarks($id)
     {
-        $student = Student::with('marks.module')->findOrFail($id);
+        $student = Student::with('marks.lesson')->findOrFail($id);
         return view('students.marks', compact('student'));
     }
 
