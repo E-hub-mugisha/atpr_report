@@ -2,6 +2,7 @@
 @section('title', 'Student Management')
 
 @section('content')
+
 <div class="container-fluid">
     <div class="nk-content-inner">
         <div class="nk-content-body">
@@ -75,7 +76,7 @@
                                 <td>{{ $student->gender }}</td>
 
                                 <td>
-                                    {{ optional($student->intake)->intake_name ?? '—' }}
+                                    {{ $student->intake->month }}/{{ $student->intake->year }}
                                 </td>
 
                                 <td>{{ $student->academic_year }}</td>
@@ -89,6 +90,12 @@
                                         </a>
                                         <div class="dropdown-menu dropdown-menu-end">
                                             <ul class="link-list-opt">
+                                                <li>
+                                                    <a href="{{ route('students.show', $student->id) }}">
+                                                        <em class="icon ni ni-eye"></em>
+                                                        <span>View Details</span>
+                                                    </a>
+                                                </li>
                                                 <li>
                                                     <a data-bs-toggle="modal" data-bs-target="#editStudentModal{{ $student->id }}">
                                                         <em class="icon ni ni-edit"></em>

@@ -9,6 +9,7 @@ use App\Http\Controllers\IntakeController;
 use App\Http\Controllers\LessonController;
 use App\Http\Controllers\MarkController;
 use App\Http\Controllers\ModuleController;
+use App\Http\Controllers\ModuleEvaluationController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TrainerController;
@@ -98,4 +99,11 @@ Route::get('/export-verification', [ReportController::class, 'export']);
 Route::resource('intakes', IntakeController::class);
    // routes/web.php
 Route::get('/reports/atpr-excel', [ReportController::class, 'export']);
+
+Route::get('/evaluations', [ModuleEvaluationController::class, 'index'])->name('evaluations.index');
+Route::post('/evaluations/retrieve', [ModuleEvaluationController::class, 'retrieveStudent'])->name('evaluations.retrieve');
+Route::get('/evaluation/create/{id}', [ModuleEvaluationController::class, 'create'])->name('evaluation.create');
+Route::post('/evaluation/store', [ModuleEvaluationController::class, 'store'])->name('evaluation.store');
+Route::get('/student/evaluations/{id}', [ModuleEvaluationController::class, 'show'])->name('evaluations.show');
+Route::get('/evaluations/{id}/export', [ModuleEvaluationController::class, 'exportPdf'])->name('evaluations.export');
 require __DIR__ . '/auth.php';

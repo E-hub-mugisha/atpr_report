@@ -102,7 +102,7 @@
 
                                         <!-- Students -->
                                         <li class="nk-menu-heading">
-                                                <h6 class="overline-title text-primary-alt">Student Marks</h6>
+                                                <h6 class="overline-title text-primary-alt">Marks & Evaluations</h6>
                                         </li>
                                         <li class="nk-menu-item">
                                                 <a href="{{ route('students.index') }}" class="nk-menu-link">
@@ -110,7 +110,13 @@
                                                         <span class="nk-menu-text">Marks</span>
                                                 </a>
                                         </li>
-
+                                        
+                                        <li class="nk-menu-item">
+                                                <a href="{{ route('evaluations.index') }}" class="nk-menu-link">
+                                                        <span class="nk-menu-icon"><em class="icon ni ni-user-check"></em></span>
+                                                        <span class="nk-menu-text">Evaluations</span>
+                                                </a>
+                                        </li>
                                         <!-- Reports -->
                                         <li class="nk-menu-heading">
                                                 <h6 class="overline-title text-primary-alt">Reports & Assessments</h6>

@@ -19,6 +19,12 @@ class StudentController extends Controller
         return view('students.index', compact('students', 'intakes'));
     }
 
+    public function show($id)
+    {
+        $student = Student::findOrFail($id);
+        return view('students.student-details', compact('student'));
+    }
+
     /**
      * Store a newly created student.
      */
