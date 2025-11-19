@@ -19,6 +19,19 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->string('qualification')->nullable();
             $table->text('bio')->nullable();
+            // Personal info
+            $table->enum('sex', ['male', 'female']);
+            $table->enum('civil_status', ['single', 'married', 'divorced', 'widow']);
+            $table->date('dob')->nullable();
+            $table->string('id_or_passport');
+
+            // School/Office
+            $table->string('school_name')->nullable();
+            $table->string('province')->nullable();
+            $table->string('district')->nullable();
+            $table->string('sector')->nullable();
+            $table->enum('school_level', ['polytechnic', 'tss', 'vtc'])->nullable();
+            $table->enum('school_status', ['public', 'government_aid', 'private'])->nullable();
             $table->timestamps();
         });
     }

@@ -16,6 +16,7 @@ class Mark extends Model
         'reass',
         'obs',
         'remarks',
+        'decision',
     ];
 
     public function lesson()

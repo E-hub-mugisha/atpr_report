@@ -18,6 +18,8 @@ return new class extends Migration
             $table->integer('order')->nullable();
             $table->foreignId('course_id')->constrained('courses')->onDelete('cascade');
             $table->string('module_code')->unique();
+            $table->enum('type', ['general','specific','complementary'])
+                  ->default('general');
             $table->timestamps();
         });
     }

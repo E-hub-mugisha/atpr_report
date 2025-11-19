@@ -71,7 +71,6 @@
                             <tr class="nk-tb-item nk-tb-head">
                                 <th class="nk-tb-col" title="Trainee full name">Trainee</th>
                                 <th class="nk-tb-col" title="Formative Assessment">FA</th>
-                                <th class="nk-tb-col" title="Integrated Assessment">IA</th>
                                 <th class="nk-tb-col" title="Comprehensive Assessment">CA</th>
                                 <th class="nk-tb-col" title="Sum of FA + CA + reassessment">Total</th>
                                 <th class="nk-tb-col" title="Re-assessment marks">Reass</th>
@@ -90,7 +89,6 @@
                                     {{ Str::limit($mark->student->first_name . ' ' . $mark->student->last_name, 20) }}
                                 </td>
                                 <td class="nk-tb-col">{{ $mark->f_a }}</td>
-                                <td class="nk-tb-col">{{ $mark->i_a }}</td>
                                 <td class="nk-tb-col">{{ $mark->c_a }}</td>
                                 <td class="nk-tb-col">{{ $mark->total }}</td>
                                 <td class="nk-tb-col">{{ $mark->reass }}</td>
@@ -156,7 +154,7 @@
 <!-- Add Student Marks Modal -->
 <div class="modal fade" id="addStudentMarksModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
-        <form method="POST" action="{{ route('lessons.marks.store', [$lesson->module_id, $lesson->id]) }}" class="modal-content border-0 shadow-lg rounded-4">
+        <form method="POST" action="{{ route('lessons.marks.storeComplementary', [$lesson->module_id, $lesson->id]) }}" class="modal-content border-0 shadow-lg rounded-4">
             @csrf
             <div class="modal-header bg-light border-0 rounded-top-4">
                 <h5 class="modal-title fw-bold text-primary">
@@ -180,10 +178,6 @@
                     <div class="col-md-4">
                         <label class="form-label fw-semibold">Formative Assessment (FA)</label>
                         <input type="number" name="f_a" class="form-control rounded-3" placeholder="Enter Formative Assessment">
-                    </div>
-                    <div class="col-md-4">
-                        <label class="form-label fw-semibold">Integrated Assessment (CA)</label>
-                        <input type="number" name="i_a" class="form-control rounded-3" placeholder="Enter Integrated Assessment">
                     </div>
                     <div class="col-md-4">
                         <label class="form-label fw-semibold">Comprehensive Assessment (CA)</label>
@@ -235,10 +229,6 @@
                     <div class="col-md-4">
                         <label class="form-label fw-semibold">Formative Assessment (FA)</label>
                         <input type="number" name="f_a" class="form-control rounded-3" value="{{ $mark->f_a }}">
-                    </div>
-                    <div class="col-md-4">
-                        <label class="form-label fw-semibold">Integrated Assessment (CA)</label>
-                        <input type="number" name="i_a" class="form-control rounded-3" value="{{ $mark->i_a }}">
                     </div>
                     <div class="col-md-4">
                         <label class="form-label fw-semibold">Comprehensive Assessment (CA)</label>

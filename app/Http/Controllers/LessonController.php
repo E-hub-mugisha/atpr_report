@@ -29,11 +29,29 @@ class LessonController extends Controller
             ->where('module_id', $moduleId)
             ->firstOrFail();
 
-        $lessonmarks = Mark::where('lesson_id', $lesson->id)->with('student')->get();
+        // Determine module type
+        $moduleType = $lesson->module->type;   // general | specific | complementary
+
+        // Fetch marks + students
+        $lessonmarks = Mark::where('lesson_id', $lesson->id)
+            ->with('student')
+            ->get();
+
         $students = Student::all();
 
-        return view('lessons.marks', compact('lesson', 'lessonmarks', 'students'));
+        /**
+         * View selection logic
+         * - general + specific → default view
+         * - complementary → different view
+         */
+        $view = match ($moduleType) {
+            'complementary' => 'lessons.complementary_marks',
+            default         => 'lessons.marks',
+        };
+
+        return view($view, compact('lesson', 'lessonmarks', 'students'));
     }
+
 
 
     /**
@@ -48,9 +66,9 @@ class LessonController extends Controller
         ]);
 
         $module->lessons()->create([
-            'title' => $request->title,
-            'content' => $request->content,
-            'lesson_code' => $request->lesson_code,
+            'title' => $request->input('title'),
+            'content' => $request->input('content'),
+            'lesson_code' => $request->input('lesson_code'),
         ]);
 
         return back()->with('success', 'Lesson added.');

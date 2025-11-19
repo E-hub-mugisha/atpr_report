@@ -13,6 +13,7 @@ class Module extends Model
         'order',
         'course_id',
         'module_code',
+        'type'
     ];
     public function course()
     {

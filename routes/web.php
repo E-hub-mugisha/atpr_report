@@ -71,11 +71,17 @@ Route::prefix('modules/{module}')->group(function () {
 Route::prefix('modules/{module}/lessons/{lesson}')->group(function () {
     Route::get('marks', [MarkController::class, 'index'])->name('lessons.marks.index');
     Route::post('marks', [MarkController::class, 'store'])->name('lessons.marks.store');
+    Route::post('marks/store_complementary', [MarkController::class, 'storeComplementary'])->name('lessons.marks.storeComplementary');
     Route::put('marks/{mark}', [MarkController::class, 'update'])->name('lessons.marks.update');
-    Route::delete('marks/{mark}', [MarkController::class, 'destroy'])->name('lessons.marks.destroy');
     Route::post('marks/import', [MarkController::class, 'import'])->name('lessons.marks.import');
     Route::get('marks/export', [MarkController::class, 'export'])->name('lessons.marks.export');
 });
+
+Route::get('/marks', [MarkController::class, 'index'])->name('marks.index');
+Route::delete('marks/delete/{id}', [MarkController::class, 'destroy'])
+    ->name('lessons.marks.destroy');
+Route::delete('/lessons/{module}/{lesson}/marks/delete-all', [MarkController::class, 'deleteAll'])->name('lessons.marks.deleteAll');
+
 
 Route::resource('students', StudentController::class);
 Route::get('/student/{id}/marks/view', [StudentController::class, 'viewMarks'])->name('student.marks.view');

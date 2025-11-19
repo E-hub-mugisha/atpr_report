@@ -25,6 +25,15 @@ return new class extends Migration
             $table->string('qualification_title')->nullable();
             $table->string('intake_no')->nullable();
             $table->string('intake_year')->nullable();
+            $table->enum('status', ['active', 'inactive','graduated','dropped'])->default('active');
+            $table->integer('id_number')->unique();
+            $table->unsignedBigInteger('intake_id');
+            $table->foreign('intake_id')->references('id')->on('intakes')->onDelete('cascade');
+            $table->integer('phone_next_of_kin');
+            $table->string('address');
+            $table->boolean('disability')->default(false);
+            $table->enum('marital_status', ['single', 'married', 'divorced', 'widowed']);
+            $table->string('education_level');
             $table->timestamps();
         });
     }

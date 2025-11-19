@@ -21,8 +21,10 @@ return new class extends Migration
             $table->integer('c_a')->nullable();
             $table->integer('total')->nullable();
             $table->integer('reass')->nullable();
-            $table->string('obs')->nullable();
-            $table->text('remarks')->nullable();
+            $table->enum('remarks', ['Pass', 'Fail', 'Distinction', 'Merit'])->nullable();
+            $table->enum('obs', ['Improvement Needed', 'Good Performance', 'Excellent Performance', 'Satisfactory'])->nullable();
+            $table->enum('decision', ['C', 'NYC'])->default('NYC');
+            $table->boolean('reassessment_needed')->default(false);
             $table->timestamps();
         });
     }
