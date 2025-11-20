@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Exports\CompetentStudentsExport;
 use App\Exports\FinalReportExport;
 use App\Exports\StudentInfoReport;
+use App\Exports\VerificationExport;
 use App\Exports\VerificationReport;
 use App\Models\Intake;
 use App\Models\Mark;
@@ -99,8 +100,10 @@ class ReportController extends Controller
             ["Gukora ibikenewe by'ibanze ku modoka zitwara abantu",    "DRVVM 001"],
         ];
 
+        $intakeId = request('intake_id');
+
         // Students
-        $students = Student::orderBy('first_name')->get();
+        $students = Student::where('intake_id', $intakeId)->orderBy('first_name')->get();
 
         // Module order = the 9 modules you have
         $moduleOrder = Module::orderBy('id')->pluck('id')->toArray();
@@ -440,5 +443,89 @@ class ReportController extends Controller
         }, $fileName, [
             'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
         ]);
+    }
+
+    public function verificationReport()
+    {
+        // ---------------- SCHOOL DETAILS ----------------
+        $school = [
+            'name'          => 'ASSOCIATION DES TRANSPORTEURS DES PERSONNES AU RWANDA (ATPR TC)',
+            'district'      => 'Nyarugenge',
+            'sector'        => 'Muhima',
+            'head_teacher'  => 'ACP (Rtd) AHIMANA Anselme',
+            'status'        => 'PRIVATE',
+            'phone'         => '0788456099',
+            'email'         => 'aahimana@yahoo.fr',
+        ];
+
+        // ------------- PROGRAM / CLASS DETAILS ------------
+        $program = [
+            'sector'       => 'TRANSPORT & LOGISTICS',
+            'trade'        => 'INZOZAMUGWA MU GUTWARA ABANTU MU BURY O BWA RUSANGE',
+            'course'       => 'IBT',
+            'modules'      => 9,
+            'duration'     => 'Three Months',
+            'start_date'   => '21 October 2024',
+            'end_date'     => '26 January 2025',
+            'teacher'      => 'SHEMA OLIVIER',
+            'learners'     => 153,
+            'teachers'     => 6,
+        ];
+
+        // ------------- MODULE TITLES (Dynamic) --------------
+        $modules = Module::with('lessons')->get();
+
+        // ----------- TRAINEES + MARKS (Example Dynamic) -------
+        $students = Student::with('marks')->get();
+
+        return view('reports.verification-report', compact(
+            'school',
+            'program',
+            'modules',
+            'students'
+        ));
+    }
+
+    public function exportVerification()
+    {
+        // ---------------- SCHOOL DETAILS ----------------
+        $school = [
+            'name'          => 'ASSOCIATION DES TRANSPORTEURS DES PERSONNES AU RWANDA (ATPR TC)',
+            'district'      => 'Nyarugenge',
+            'sector'        => 'Muhima',
+            'head_teacher'  => 'ACP (Rtd) AHIMANA Anselme',
+            'status'        => 'PRIVATE',
+            'phone'         => '0788456099',
+            'email'         => 'aahimana@yahoo.fr',
+        ];
+
+        // ------------- PROGRAM / CLASS DETAILS ------------
+        $program = [
+            'sector'       => 'TRANSPORT & LOGISTICS',
+            'trade'        => 'INZOZAMUGWA MU GUTWARA ABANTU MU BURY O BWA RUSANGE',
+            'course'       => 'IBT',
+            'modules'      => 9,
+            'duration'     => 'Three Months',
+            'start_date'   => '21 October 2024',
+            'end_date'     => '26 January 2025',
+            'teacher'      => 'SHEMA OLIVIER',
+            'learners'     => 153,
+            'teachers'     => 6,
+        ];
+
+        // ------------- MODULE TITLES (Dynamic) --------------
+        $modules = Module::with('lessons')->get();
+
+        $intakeId = request('intake_id');
+
+        // ----------- TRAINEES + MARKS (Example Dynamic) -------
+        $students = Student::where('intake_id', $intakeId)->with('marks')->get();
+        $total = $students->count();
+        $competent = $students->where('decision', 'C')->count();
+
+        return Excel::download(
+            new VerificationExport($school, $program, $modules, $students, $total, $competent),
+            'verification.xlsx'
+        );
     }
 }

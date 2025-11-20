@@ -8,7 +8,10 @@
         <i class="bi bi-file-earmark-bar-graph me-2"></i>
         Reports Center
     </h2>
-
+<a href="/verification-report" 
+   class="btn btn-success">
+    View verification Report
+</a>
     <p class="text-muted mb-4">Generate reports based on intakes and student performance.</p>
 
     <div class="row g-4">
@@ -61,7 +64,7 @@
                         <i class="bi bi-clipboard-data-fill"></i>
                     </div>
 
-                    <h4 class="fw-bold">Final Results Report</h4>
+                    <h4 class="fw-bold">Final verification Report</h4>
                     <p class="text-muted">Generate final summary for all students and their marks.</p>
 
                     <button class="btn btn-danger rounded-pill px-4"
@@ -97,7 +100,6 @@
             </div>
 
             <div class="modal-footer">
-                <button class="btn btn-secondary rounded-pill" data-bs-dismiss="modal">Cancel</button>
                 <button class="btn btn-success rounded-pill px-4">Generate</button>
             </div>
         </form>
@@ -125,7 +127,6 @@
             </div>
 
             <div class="modal-footer">
-                <button class="btn btn-outline-secondary rounded-pill" data-bs-dismiss="modal">Cancel</button>
                 <button class="btn btn-primary rounded-pill px-4">Generate</button>
             </div>
         </form>
@@ -136,7 +137,7 @@
 <!-- ✅ MODAL 3: Final Report -->
 <div class="modal fade" id="finalReportModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
-        <form method="GET" action="{{ route('reports.verification') }}" class="modal-content rounded-4 shadow-lg">
+        <form method="GET" action="{{ route('export.verification') }}" class="modal-content rounded-4 shadow-lg">
             <div class="modal-header">
                 <h5 class="modal-title fw-bold">Select Intake</h5>
                 <button class="btn-close" data-bs-dismiss="modal"></button>
@@ -153,7 +154,6 @@
             </div>
 
             <div class="modal-footer">
-                <button class="btn btn-outline-secondary rounded-pill" data-bs-dismiss="modal">Cancel</button>
                 <button class="btn btn-danger rounded-pill px-4">Generate</button>
             </div>
         </form>

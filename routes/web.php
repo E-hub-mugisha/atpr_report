@@ -105,6 +105,10 @@ Route::get('/export-verification', [ReportController::class, 'export']);
 Route::resource('intakes', IntakeController::class);
    // routes/web.php
 Route::get('/reports/atpr-excel', [ReportController::class, 'export']);
+Route::get('/verification-report', [ReportController::class, 'verificationReport'])
+    ->name('verification.report');
+Route::get('/export/verification/', [ReportController::class, 'exportVerification'])
+    ->name('export.verification');
 
 Route::get('/evaluations', [ModuleEvaluationController::class, 'index'])->name('evaluations.index');
 Route::post('/evaluations/retrieve', [ModuleEvaluationController::class, 'retrieveStudent'])->name('evaluations.retrieve');

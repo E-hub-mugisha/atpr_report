@@ -3,6 +3,7 @@
 namespace App\Exports;
 
 use App\Models\Intake;
+use App\Models\Module;
 use App\Models\Student;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
@@ -27,6 +28,7 @@ class VerificationReport implements FromView, WithStyles, WithColumnWidths, Shou
     {
         return view('reports.verification', [
             'students' => Student::where('intake_id', $this->intake)->get(),
+            'modules' => Module::all(),
             'intake' => Intake::find($this->intake),
         ]);
     }

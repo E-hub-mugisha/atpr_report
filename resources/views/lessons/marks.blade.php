@@ -20,26 +20,9 @@
 
                         <!-- Upload Excel -->
                         <button class="btn btn-sm btn-outline-success rounded-pill" data-bs-toggle="modal" data-bs-target="#uploadExcelModal">
-                            📤 Upload Excel
+                            📤 Upload Excel Marks
                         </button>
-                        <div class="modal fade" id="uploadExcelModal" tabindex="-1">
-                            <div class="modal-dialog">
-                                <form method="POST" action="{{ route('lessons.marks.import', [$lesson->module_id, $lesson->id]) }}" enctype="multipart/form-data">
-                                    @csrf
-                                    <div class="modal-header">
-                                        <h5 class="modal-title">Upload Marks via Excel</h5>
-                                    </div>
-                                    <div class="modal-body">
-                                        <input type="file" name="excel_file" class="form-control" accept=".xlsx,.xls" required>
-                                        <small class="text-muted">Ensure your file has headers: trainee, i_a, f_a, c_a, total, reass, obs, remarks</small>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                        <button class="btn btn-success" type="submit">Upload</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
+
 
                         <!-- Export Excel -->
                         <a href="{{ route('lessons.marks.export', [$lesson->module_id, $lesson->id]) }}" class="btn btn-outline-primary rounded-pill">Export</a>
@@ -150,6 +133,26 @@
             </div>
 
         </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="uploadExcelModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <form method="POST" action="{{ route('lessons.marks.import', [$lesson->module_id, $lesson->id]) }}" enctype="multipart/form-data">
+            @csrf
+            <div class="modal-header">
+                <h5 class="modal-title">Upload Marks via Excel for {{ $lesson->title }}</h5>
+            </div>
+            <div class="modal-body">
+                <input type="file" name="excel_file" class="form-control" accept=".xlsx,.xls" required>
+                <small class="text-muted">Ensure your file has headers: trainee, i_a, f_a, c_a, total, reass, obs, remarks</small>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button class="btn btn-success" type="submit">Upload</button>
+            </div>
+        </form>
     </div>
 </div>
 
