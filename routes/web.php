@@ -87,7 +87,7 @@ Route::resource('students', StudentController::class);
 Route::get('/student/{id}/marks/view', [StudentController::class, 'viewMarks'])->name('student.marks.view');
 
 Route::get('/students/marks/report', [StudentController::class, 'reportPage'])->name('students.report');
-Route::post('/students/marks/report/generate', [StudentController::class, 'generateReport'])->name('students.report.generate');
+Route::get('/students/report/generate/{id}', [StudentController::class, 'generateReport'])->name('students.report.generate');
 
 Route::post('/students/marks/report/pdf', [StudentController::class, 'generatePdf'])->name('students.report.pdf');
 Route::post('/students/marks/report/excel', [StudentController::class, 'generateExcel'])->name('students.report.excel');

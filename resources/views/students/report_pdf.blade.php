@@ -1,7 +1,7 @@
-@php 
-    use App\Models\course;
-    
-    $course = course::all()->first();
+@php
+use App\Models\course;
+
+$course = course::all()->first();
 @endphp
 
 <!DOCTYPE html>
@@ -15,16 +15,34 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            font-size: 12px;
-            line-height: 1.2;
-            margin: 20px;
+            font-size: 13px;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 20px;
         }
+
+        .no-border td {
+            border: none !important;
+        }
+
+        .center {
+            text-align: center;
+        }
+
+        .bold {
+            font-weight: bold;
+        }
+
+        .title {
+            font-size: 17px;
+            font-weight: bold;
+            text-align: center;
+            padding: 8px;
+            text-transform: uppercase;
+        }
+
 
         th,
         td {
@@ -54,166 +72,222 @@
 
 <body>
 
-    <!-- Header Section -->
-    <table class="header-table">
+    <!-- ======================= HEADER TOP ======================= -->
+    <table>
         <tr>
-            <td>
-                REPUBLIC OF RWANDA<br>
-                MINISTRY OF EDUCATION<br>
-                RWANDA TVET BOARD<br>
-                ATPR TRAINING CENTER<br>
-                Email: atpr.association@gmail.com<br>
-                Tel: 0788456099
+            <!-- LEFT COLUMN -->
+            <td style="width:35%; font-size:13px;">
+                <strong>REPUBLIC OF RWANDA</strong><br>
+                <strong>MINISTRY OF EDUCATION</strong><br>
+                <strong>RWANDA TVET BOARD</strong><br>
+                <strong>ATPR TRAINING CENTER</strong><br>
+                Email: atpr.assosciation@gmail.com<br>
+                Tel: 0788456039
             </td>
 
-            <td style="text-align:right;">
-                ACADEMIC YEAR: {{ $student->academic_year }} <br>
-                CLASS: INTAKE {{ $student->intake_no }}/{{ $student->intake_year ?? '—' }} <br>
-                COURSE DURATION: {{ $course->duration }} Weeks <br>
-                TRAINEE NAME: {{ $student->first_name }} {{ $student->last_name }} <br>
-                Reg N°: {{ $student->student_id }}
+            <!-- CENTER LOGOS -->
+            <td style="width:30%; text-align:center;">
+                <table style="margin:auto;">
+                    <tr>
+                        <td style="padding:5px; text-align:center;">
+                            <img src="data:image/png;base64,{{ $rtbLogo }}" width="120">
+                        </td>
+                        <td style="padding:5px; text-align:center;">
+                            <img src="data:image/png;base64,{{ $atprLogo }}" width="120">
+                        </td>
+                    </tr>
+                </table>
+            </td>
+
+
+            <!-- RIGHT COLUMN -->
+            <td style="width:35%; font-size:13px;">
+                <strong>ACADEMIC YEAR:</strong> {{ $student->academic_year }}<br>
+                <strong>CLASS:</strong> INTAKE {{ $student->intake->month }}/{{ $student->intake->year }}<br>
+                <strong>COURSE DURATION:</strong> 14 Weeks<br>
+                <strong>TRAINEE NAME:</strong> {{ $student->full_name }}<br>
+                <strong>Reg No:</strong> {{ $student->student_id }}
             </td>
         </tr>
     </table>
 
-    <h2 style="text-align:center;">TRAINEE OVERALL ASSESSMENT REPORT</h2>
-    <p style="text-align:center; font-weight:bold;">CURRICULUM: {{ $course->name }}</p>
-
-
-    <!-- Main Info Table -->
+    <!-- ======================= CURRICULUM ROW ======================= -->
     <table>
         <tr>
-            <th>Sector</th>
-            <th>Qualification Title</th>
-            <th>RQF Level</th>
-        </tr>
-        <tr>
-            <td>{{ $student->sector }}</td>
-            <td>{{ $student->qualification_title }}</td>
-            <td>{{ $student->rqf_level }}</td>
+            <td class="center bold" style="border-top:none;">
+                CURRICULUM: INOZAMVUGA MU GUTWARA ABANTU KINYAMVUGA
+            </td>
         </tr>
     </table>
 
+    <!-- ======================= REPORT TITLE ======================= -->
+    <div class="title">
+        TRAINEE OVERALL ASSESSMENT REPORT
+    </div>
 
-    <!-- MODULES & LESSONS TABLE -->
-    <table>
-        <thead>
-            <tr>
-                <th>Module Code</th>
-                <th>Module Title</th>
-                <th>Module Weight</th>
-                <th>FA</th>
-                <th>IA</th>
-                <th>CA</th>
-                <th>Total</th>
-                <th>%</th>
-                <th>Re-assessment</th>
-                <th>Decision</th>
-            </tr>
-        </thead>
-
-        <tbody>
-
-            @foreach($modules as $module)
-
-            <!-- MODULE TITLE ROW -->
-            <tr class="module-section">
-                <td colspan="10">{{ $module->title }}</td>
-            </tr>
-
-            <!-- MODULE ROW WITH STUDENT MARKS -->
-            @php
-            $moduleMarks = $student->marks
-            ->where('module_id', $module->id)
-            ->first();
-            @endphp
-
-            <tr>
-                <td>{{ $module->code }}</td>
-                <td>{{ $module->title }}</td>
-                <td>{{ $module->weight }}</td>
-
-                <td>{{ $moduleMarks->f_a ?? 'N/A' }}</td>
-                <td>{{ $moduleMarks->i_a ?? 'N/A' }}</td>
-                <td>{{ $moduleMarks->c_a ?? 'N/A' }}</td>
-
-                <td>{{ $moduleMarks->total ?? '' }}</td>
-                <td>{{ $moduleMarks->percentage ?? '' }}</td>
-
-                <td>{{ $moduleMarks->reass ?? '' }}</td>
-                <td>{{ $moduleMarks->decision ?? '' }}</td>
-            </tr>
-
-            <!-- LESSONS INSIDE MODULE -->
-            @foreach($module->lessons as $lesson)
-
-            @php
-            $lessonMark = $student->marks
-            ->where('lesson_id', $lesson->id)
-            ->first();
-            @endphp
-
-            <tr>
-                <td colspan="2" style="padding-left:20px;">Lesson: {{ $lesson->title }}</td>
-
-                <td>{{ $lesson->weight ?? '' }}</td>
-
-                <td>{{ $lessonMark->f_a ?? 'N/A' }}</td>
-                <td>{{ $lessonMark->i_a ?? 'N/A' }}</td>
-                <td>{{ $lessonMark->c_a ?? 'N/A' }}</td>
-
-                <td>{{ $lessonMark->total ?? '' }}</td>
-                <td>{{ $lessonMark->percentage ?? '' }}</td>
-
-                <td>{{ $lessonMark->reass ?? '' }}</td>
-                <td>{{ $lessonMark->remarks ?? '' }}</td>
-            </tr>
-
-            @endforeach
-
-            @endforeach
-
-
-            <!-- TOTALS SECTION -->
-            <tr>
-                <td colspan="6" style="text-align:right;">TOTAL:</td>
-                <td>{{ $student->total_marks }}</td>
-                <td colspan="3">{{ $student->total_percentage }}%</td>
-            </tr>
-
-            <tr>
-                <td colspan="6" style="text-align:right;">PERCENTAGE:</td>
-                <td>{{ $student->total_percentage }}%</td>
-                <td colspan="3"></td>
-            </tr>
-
-            <tr>
-                <td colspan="6" style="text-align:right;">POSITION:</td>
-                <td colspan="4">{{ $student->position }}</td>
-            </tr>
-
-        </tbody>
-    </table>
-
-
-    <!-- Footer Section -->
-    <p>Class Trainer’s Comments & Signature:</p>
+    <!-- ======================= SECTOR / TRADE / RQF ======================= -->
     <table>
         <tr>
-            <td style="height:60px;"></td>
+            <td><strong>SECTOR:</strong> TRANSPORT</td>
+            <td><strong>QUALIFICATION TITLE:</strong> PROFESSIONAL PASSENGER DRIVER</td>
+        </tr>
+        <tr>
+            <td><strong>TRADE:</strong> PASSENGER DRIVING</td>
+            <td><strong>RQF LEVEL:</strong> 1</td>
         </tr>
     </table>
 
-    <table>
+    <table style="width:100%; border-collapse:collapse; font-size:13px;">
         <tr>
-            <td>Deliberation</td>
-            <td>Promoted at 1st sitting</td>
-            <td>Reassessment required</td>
-            <td>Promoted after Re-assessment</td>
-            <td>Advised to Repeat</td>
-            <td>Dismissed</td>
+            <td colspan="10" style="border:1px solid #000; padding:5px;"><strong>Behavior:</strong></td>
+        </tr>
+
+        <!-- HEADER ROWS -->
+        <tr>
+            <th rowspan="3" style="border:1px solid #000;">Module Code</th>
+            <th rowspan="3" style="border:1px solid #000;">Module Title</th>
+            <th rowspan="3" style="border:1px solid #000; text-align:center;">Module weight</th>
+            <th colspan="4" style="border:1px solid #000; text-align:center;">MAX RESULTS</th>
+            <th rowspan="3" style="border:1px solid #000; text-align:center;">Average</th>
+            <th rowspan="3" style="border:1px solid #000; text-align:center;">Re-assessment (%)</th>
+            <th rowspan="3" style="border:1px solid #000; text-align:center;">Decision</th>
+        </tr>
+
+        <tr>
+            <th style="border:1px solid #000; text-align:center;">Formative Assessment</th>
+            <th style="border:1px solid #000; text-align:center;">Ass. Comp (AI)</th>
+            <th style="border:1px solid #000; text-align:center;">Ass. Comp (AII)</th>
+            <th style="border:1px solid #000; text-align:center;">Total marks</th>
+        </tr>
+
+        <tr>
+            <th style="border:1px solid #000; text-align:center;">50</th>
+            <th style="border:1px solid #000; text-align:center;">50</th>
+            <th style="border:1px solid #000; text-align:center;">100</th>
+            <th style="border:1px solid #000; text-align:center;">100</th>
+        </tr>
+        @foreach($modules as $module)
+        {{-- COMPLEMENTARY MODULES --}}
+        @if($module->type == "complementary")
+
+        {{-- Section Header (only once per complementary group) --}}
+        @if(!isset($printedComplementary))
+        @php $printedComplementary = true; @endphp
+        <tr>
+            <td colspan="10" style="background:#e6e6e6; font-weight:bold; border:1px solid #000;">
+                COMPLEMENTARY MODULES
+            </td>
+        </tr>
+        @endif
+
+        @foreach($module->lessons as $lesson)
+        @php $mark = $lesson->marks->first(); @endphp
+        <tr>
+            <td style="border:1px solid #000;">{{ $lesson->lesson_code }}</td>
+            <td style="border:1px solid #000;">{{ $lesson->title }}</td>
+            <td style="border:1px solid #000; text-align:center;"></td>
+            <td style="border:1px solid #000; text-align:center;">{{ $mark->f_a ?? '-' }}</td>
+            <td style="border:1px solid #000; text-align:center;">N/A</td>
+            <td style="border:1px solid #000; text-align:center;">{{ $mark->c_a ?? '-' }}</td>
+            <td style="border:1px solid #000; text-align:center;">{{ $mark->total ?? '-' }}</td>
+            <td style="border:1px solid #000; text-align:center;">{{ $mark->reass ?? '-' }}</td>
+            <td style="border:1px solid #000; text-align:center;">{{ $mark->obs ?? '-' }}</td>
+            <td style="border:1px solid #000; text-align:center;">{{ $mark->remarks ?? '-' }}</td>
+        </tr>
+        @endforeach
+
+        {{-- CORE MODULES --}}
+        @else
+
+        <tr>
+            <td colspan="10" style="background:#d9e6e8; font-weight:bold; text-align:center; border:1px solid #000;">
+                CORE MODULES
+            </td>
+        </tr>
+
+        {{-- MODULE TITLE --}}
+        <tr>
+            <td colspan="10" style="background:#e6e6e6; border:1px solid #000; font-weight:bold;">
+                {{ $module->title }}
+            </td>
+        </tr>
+
+        @foreach($module->lessons as $lesson)
+        @php $mark = $lesson->marks->first(); @endphp
+        <tr>
+            <td style="border:1px solid #000;">{{ $lesson->lesson_code }}</td>
+            <td style="border:1px solid #000;">{{ $lesson->title }}</td>
+            <td style="border:1px solid #000; text-align:center;"></td>
+            <td style="border:1px solid #000; text-align:center;">{{ $mark->f_a ?? '-' }}</td>
+            <td style="border:1px solid #000; text-align:center;">N/A</td>
+            <td style="border:1px solid #000; text-align:center;">{{ $mark->c_a ?? '-' }}</td>
+            <td style="border:1px solid #000; text-align:center;">{{ $mark->total ?? '-' }}</td>
+            <td style="border:1px solid #000; text-align:center;">{{ $mark->reass ?? '-' }}</td>
+            <td style="border:1px solid #000; text-align:center;">{{ $mark->obs ?? '-' }}</td>
+            <td style="border:1px solid #000; text-align:center;">{{ $mark->remarks ?? '-' }}</td>
+        </tr>
+        @endforeach
+
+        @endif
+        @endforeach
+
+
+        <!-- TOTAL -->
+        <tr>
+            <td colspan="6" style="border:1px solid #000;"><strong>TOTAL:</strong></td>
+            <td style="border:1px solid #000; text-align:center;"><strong>342.5</strong></td>
+            <td colspan="3" style="border:1px solid #000;"></td>
+        </tr>
+
+        <!-- PERCENTAGE -->
+        <tr>
+            <td colspan="6" style="border:1px solid #000;"><strong>PERCENTAGE:</strong></td>
+            <td style="border:1px solid #000; text-align:center;"><strong>38</strong></td>
+            <td colspan="3" style="border:1px solid #000;"></td>
+        </tr>
+
+        <!-- POSITION -->
+        <tr>
+            <td colspan="10" style="border:1px solid #000;"><strong>POSITION</strong></td>
+        </tr>
+
+        <tr>
+            <td colspan="10" style="border:1px solid #000;"><strong>Class Trainer’s Comments & signature:</strong></td>
         </tr>
     </table>
+
+    <table border="1" cellspacing="0" cellpadding="6" style="border-collapse: collapse; width:100%;">
+        <tr>
+            <th style="width:200px;">Deliberation</th>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td><strong>Promoted at 1st sitting</strong></td>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td><strong>Reassessment required</strong></td>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td><strong>Promoted after Re-assessment</strong></td>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td><strong>Advised to Repeat</strong></td>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td><strong>Dismissed</strong></td>
+            <td></td>
+        </tr>
+    </table>
+
 
 </body>
 

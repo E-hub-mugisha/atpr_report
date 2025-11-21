@@ -8,11 +8,11 @@
                 class="toggle btn-white btn btn-icon btn-light" data-target="athPromo"><em
                     class="icon ni ni-info"></em></a></div>
         <div class="nk-block nk-block-middle nk-auth-body">
-            <div class="brand-logo pb-5"><a href="../../index.html" class="logo-link"><img
-                        class="logo-light logo-img logo-img-lg" src="../../images/logo.png"
-                        srcset="/demo1/images/logo2x.png 2x" alt="logo"><img
-                        class="logo-dark logo-img logo-img-lg" src="../../images/logo-dark.png"
-                        srcset="/demo1/images/logo-dark2x.png 2x" alt="logo-dark"></a></div>
+            <div class="brand-logo pb-5"><a href="#" class="logo-link"><img
+                        class="logo-light logo-img logo-img-lg" src="{{ asset('assets/images/atpr_t_c.png') }}"
+                        srcset="{{ asset('assets/images/atpr_t_c.png') }} 2x" alt="logo"><img
+                        class="logo-dark logo-img logo-img-lg" src="{{ asset('assets/images/atpr_t_c.png') }}"
+                        srcset="{{ asset('assets/images/atpr_t_c.png') }}" alt="logo-dark"></a></div>
             <div class="nk-block-head">
                 <div class="nk-block-head-content">
                     <h5 class="nk-block-title">Sign-Up</h5>
@@ -83,39 +83,17 @@
         data-toggle-overlay="true">
         <div class="slider-wrap w-100 w-max-550px p-3 p-sm-5 m-auto">
             <div class="slider-init" data-slick='{"dots":true, "arrows":false}'>
-                <div class="slider-item">
-                    <div class="nk-feature nk-feature-center">
-                        <div class="nk-feature-img"><img class="round"
-                                src="../../images/slides/promo-a.png"
-                                srcset="/demo1/images/slides/promo-a2x.png 2x" alt=""></div>
-                        <div class="nk-feature-content py-4 p-sm-5">
-                            <h4>Dashlite</h4>
-                            <p>You can start to create your products easily with its user-friendly
-                                design & most completed responsive layout.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="slider-item">
-                    <div class="nk-feature nk-feature-center">
-                        <div class="nk-feature-img"><img class="round"
-                                src="../../images/slides/promo-b.png"
-                                srcset="/demo1/images/slides/promo-b2x.png 2x" alt=""></div>
-                        <div class="nk-feature-content py-4 p-sm-5">
-                            <h4>Dashlite</h4>
-                            <p>You can start to create your products easily with its user-friendly
-                                design & most completed responsive layout.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="slider-item">
-                    <div class="nk-feature nk-feature-center">
-                        <div class="nk-feature-img"><img class="round"
-                                src="../../images/slides/promo-c.png"
-                                srcset="/demo1/images/slides/promo-c2x.png 2x" alt=""></div>
-                        <div class="nk-feature-content py-4 p-sm-5">
-                            <h4>Dashlite</h4>
-                            <p>You can start to create your products easily with its user-friendly
-                                design & most completed responsive layout.</p>
+                <div class="slider-init" data-slick='{"dots":true, "arrows":false}'>
+                    <div class="slider-item">
+                        <div class="nk-feature nk-feature-center">
+                            <div class="nk-feature-img"><img class="round"
+                                    src="{{ asset('assets/images/coaster.png') }}"
+                                    srcset="/demo1/images/coaster.png 2x" alt=""></div>
+                            <div class="nk-feature-content py-4 p-sm-5">
+                                <h4>{{ config('app.name')}}</h4>
+                                <p>You can start to create your products easily with its user-friendly
+                                    design & most completed responsive layout.</p>
+                            </div>
                         </div>
                     </div>
                 </div>

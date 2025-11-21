@@ -80,23 +80,18 @@
             @endforeach
         </div>
 
-        <!-- Generate Report Button -->
-        <form action="{{ route('students.report.generate') }}" method="POST" class="mt-3">
-            @csrf
-            <input type="hidden" name="student_id" value="{{ $selectedStudent->id }}">
-            <button class="btn btn-success">Generate Report</button>
-        </form>
 
         <div class="mt-3">
+            <a href="{{ route('students.report.generate', $selectedStudent->id )}}" class="btn btn-success rounded-pill" target="_blank">View Report</a>
             <form action="{{ route('students.report.pdf') }}" method="POST" class="d-inline">
                 @csrf
                 <input type="hidden" name="student_id" value="{{ $selectedStudent->id }}">
-                <button class="btn btn-danger">Download PDF</button>
+                <button class="btn btn-danger rounded-pill" target="_blank">Download PDF</button>
             </form>
             <form action="{{ route('students.report.excel') }}" method="POST" class="d-inline">
                 @csrf
                 <input type="hidden" name="student_id" value="{{ $selectedStudent->id }}">
-                <button class="btn btn-success">Download Excel</button>
+                <button class="btn btn-success rounded-pill" target="_blank">Download Excel</button>
             </form>
         </div>
 

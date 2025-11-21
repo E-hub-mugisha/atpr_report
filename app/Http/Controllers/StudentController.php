@@ -168,9 +168,9 @@ class StudentController extends Controller
     }
 
     // Generate report (PDF/Excel)
-    public function generateReport(Request $request)
+    public function generateReport($id)
     {
-        $student = Student::findOrFail($request->student_id);
+        $student = Student::findOrFail($id);
 
         $modules = Module::with(['lessons' => function ($query) use ($student) {
             $query->with(['marks' => function ($q) use ($student) {
@@ -178,8 +178,10 @@ class StudentController extends Controller
             }]);
         }])->get();
 
-        // Here you can use Laravel Excel or DomPDF to generate report
-        // Example: return view('students.report_pdf', compact('student', 'modules'));
+        $rtbLogo = base64_encode(file_get_contents(public_path('assets/images/rtb_logo.png')));
+        $atprLogo = base64_encode(file_get_contents(public_path('assets/images/atpr_t_c.png')));
+
+        return view('students.report_pdf', compact('student', 'modules','rtbLogo','atprLogo'));
     }
 
     // Generate PDF
@@ -192,7 +194,10 @@ class StudentController extends Controller
             }]);
         }])->get();
 
-        $pdf = PDF::loadView('students.report_pdf', compact('student', 'modules'))
+        $rtbLogo = base64_encode(file_get_contents(public_path('assets/images/rtb_logo.png')));
+        $atprLogo = base64_encode(file_get_contents(public_path('assets/images/atpr_t_c.png')));
+
+        $pdf = PDF::loadView('students.report_pdf', compact('student', 'modules','rtbLogo','atprLogo'))
             ->setPaper('a4', 'portrait');
 
         return $pdf->download($student->first_name . '_report.pdf');

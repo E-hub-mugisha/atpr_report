@@ -10,8 +10,8 @@
                 </div>
                 <div class="nk-sidebar-brand">
                         <a href="{{ route('dashboard') }}" class="logo-link nk-sidebar-logo">
-                                <img class="logo-light logo-img" src="images/logo.png" alt="logo">
-                                <img class="logo-dark logo-img" src="images/logo-dark.png" alt="logo-dark">
+                                <img class="logo-light logo-img" src="{{ asset('assets/images/atpr_t_c.png') }}" alt="logo">
+                                <img class="logo-dark logo-img" src="{{ asset('assets/images/atpr_t_c.png') }}" alt="logo-dark">
                         </a>
                 </div>
         </div>
@@ -128,13 +128,7 @@
                                                 </a>
                                                 <ul class="nk-menu-sub">
                                                         <li class="nk-menu-item">
-                                                                <a href="{{ route('reports.index') }}" class="nk-menu-link">All Reports</a>
-                                                        </li>
-                                                        <li class="nk-menu-item">
-                                                                <a href="{{ route('reports.uploadForm') }}" class="nk-menu-link">Upload Report</a>
-                                                        </li>
-                                                        <li class="nk-menu-item">
-                                                                <a href="{{ route('students.report') }}" class="nk-menu-link">Student Marks Report</a>
+                                                                <a href="{{ route('students.report') }}" class="nk-menu-link">Student Report</a>
                                                         </li>
                                                         <li class="nk-menu-item">
                                                                 <a href="{{ route('rtb.reports') }}" class="nk-menu-link">RTB Reports</a>
